@@ -290,16 +290,20 @@ func deleteProductHandler(w http.ResponseWriter, r *http.Request) {
 	var imagesJson string
 	err := db.QueryRow("SELECT image_url, images_json FROM products WHERE id = ?", id).Scan(&imageUrl, &imagesJson)
 	if err == nil {
-		if imageUrl != "" && strings.HasPrefix(imageUrl, "/uploads/") {
-			os.Remove("./data" + imageUrl)
-			os.Remove("./data" + strings.Replace(imageUrl, ".jpg", "_thumb.jpg", 1))
+		if imageUrl != "" && strings.HasPrefix(imageUrl, "/api/v1/uploads/") {
+			filename := strings.TrimPrefix(imageUrl, "/api/v1/uploads/")
+			os.Remove("./data/uploads/" + filename)
+			os.Remove("./data/uploads/" + strings.ReplaceAll(filename, ".jpg", "_thumb.jpg"))
 		}
+
 		var images []string
-		if err := json.Unmarshal([]byte(imagesJson), &images); err == nil {
+		if imagesJson != "" {
+			json.Unmarshal([]byte(imagesJson), &images)
 			for _, img := range images {
-				if strings.HasPrefix(img, "/uploads/") {
-					os.Remove("./data" + img)
-					os.Remove("./data" + strings.Replace(img, ".jpg", "_thumb.jpg", 1))
+				if strings.HasPrefix(img, "/api/v1/uploads/") {
+					filename := strings.TrimPrefix(img, "/api/v1/uploads/")
+					os.Remove("./data/uploads/" + filename)
+					os.Remove("./data/uploads/" + strings.Replace(filename, ".jpg", "_thumb.jpg", 1))
 				}
 			}
 		}

@@ -43,12 +43,8 @@ func main() {
 		w.Write([]byte("OK"))
 	})
 
-	// Static route for uploads
-	os.MkdirAll("./data/uploads", os.ModePerm)
-	fs := http.StripPrefix("/uploads/", http.FileServer(http.Dir("./data/uploads")))
-	r.Get("/uploads/*", func(w http.ResponseWriter, r *http.Request) {
-		fs.ServeHTTP(w, r)
-	})
+	// API Routes Setup
+	r.Use(middleware.Logger)
 
 	// Public GET routes
 	r.Get("/api/v1/products", getProductsHandler)
@@ -63,6 +59,13 @@ func main() {
 	
 	// Project PDF generation is public but rate limited
 	r.With(RateLimitMiddleware).Post("/api/v1/projects/pdf", generateProjectPDFHandler)
+
+	// Static route for uploads (Moved to /api/v1/ to use the same NPM proxy)
+	os.MkdirAll("./data/uploads", os.ModePerm)
+	fs := http.StripPrefix("/api/v1/uploads/", http.FileServer(http.Dir("./data/uploads")))
+	r.Get("/api/v1/uploads/*", func(w http.ResponseWriter, r *http.Request) {
+		fs.ServeHTTP(w, r)
+	})
 
 	// Protected routes
 	r.Group(func(r chi.Router) {

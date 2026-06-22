@@ -92,8 +92,8 @@ func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
 	// Return the URLs
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
-		"url":       "/uploads/" + filename,
-		"thumb_url": "/uploads/" + thumbFilename,
+		"url":       "/api/v1/uploads/" + filename,
+		"thumb_url": "/api/v1/uploads/" + thumbFilename,
 	})
 }
 
