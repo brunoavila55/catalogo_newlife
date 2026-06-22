@@ -1,13 +1,23 @@
+// Normaliza URLs antigas (/uploads/) para o novo caminho (/api/v1/uploads/)
+const normalizeUploadUrl = (url: string): string => {
+  if (url.startsWith('/uploads/')) {
+    return '/api/v1' + url;
+  }
+  return url;
+};
+
 export const getImageUrl = (url?: string | null) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return import.meta.env.PROD ? url : `http://localhost:8080${url}`;
+  const normalized = normalizeUploadUrl(url);
+  return import.meta.env.PROD ? normalized : `http://localhost:8080${normalized}`;
 };
 
 export const getThumbUrl = (url?: string | null) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  const thumbPath = url.replace('.jpg', '_thumb.jpg');
+  const normalized = normalizeUploadUrl(url);
+  const thumbPath = normalized.replace('.jpg', '_thumb.jpg');
   return import.meta.env.PROD ? thumbPath : `http://localhost:8080${thumbPath}`;
 };
 

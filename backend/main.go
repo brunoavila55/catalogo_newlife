@@ -140,7 +140,17 @@ func initDB() {
 	
 	// Add JSON columns for P1 features
 	_, _ = db.Exec("ALTER TABLE products ADD COLUMN images_json TEXT DEFAULT '[]';")
-	_, _ = db.Exec("ALTER TABLE products ADD COLUMN specs_json TEXT DEFAULT '{}';")
+	_, _ = db.Exec("ALTER TABLE products ADD COLUMN specs_json TEXT DEFAULT '{}';"	)
+
+	// Migrate old /uploads/ URLs to /api/v1/uploads/
+	res, _ := db.Exec(`UPDATE products SET image_url = REPLACE(image_url, '/uploads/', '/api/v1/uploads/') WHERE image_url LIKE '/uploads/%'`)
+	if n, _ := res.RowsAffected(); n > 0 {
+		log.Printf("Migrated %d product image_url paths to /api/v1/uploads/", n)
+	}
+	res, _ = db.Exec(`UPDATE products SET images_json = REPLACE(images_json, '/uploads/', '/api/v1/uploads/') WHERE images_json LIKE '%/uploads/%' AND images_json NOT LIKE '%/api/v1/uploads/%'`)
+	if n, _ := res.RowsAffected(); n > 0 {
+		log.Printf("Migrated %d product images_json paths to /api/v1/uploads/", n)
+	}
 
 	// Performance Optimization PRAGMAS
 	_, err = db.Exec(`
