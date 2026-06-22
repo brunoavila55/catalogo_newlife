@@ -43,11 +43,11 @@ O projeto já está configurado para ser servido facilmente através de um Proxy
    docker compose up -d --build
    ```
 
-Isso fará com que o Frontend fique exposto na porta `3000` e o Backend na porta `8080` do seu servidor. 
+Isso fará com que o Frontend fique exposto na porta `5173` e o Backend na porta `5174` do seu servidor. 
 
 **Configuração no Nginx Proxy Manager:**
-- Crie um Proxy Host para o seu domínio (ex: `catalogo.newlifefibra.com.br`) apontando para o IP do seu servidor na porta `3000`.
+- Crie um Proxy Host para o seu domínio (ex: `catalogo.newlifefibra.com.br`) apontando para o IP do seu servidor na porta `5173`.
 - Na aba **Custom Locations**, adicione:
-  - Local: `/api` apontando para o IP na porta `8080`.
-  - Local: `/uploads` apontando para o IP na porta `8080`.
+  - Local: `/api` apontando para o IP na porta `5174`.
+  - Local: `/uploads` apontando para o IP na porta `5174`.
 Isso fará o roteamento correto para a interface e para a API!

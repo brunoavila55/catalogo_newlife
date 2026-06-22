@@ -6,7 +6,7 @@ services:
       context: ./frontend
     container_name: nlf-catalogo-frontend
     ports:
-      - "3000:80"
+      - "5173:80"
     restart: unless-stopped
 
   backend:
@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8080:8080"
+      - "5174:8080"
     volumes:
       - ./data:/app/data
     restart: unless-stopped
