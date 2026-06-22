@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = import.meta.env.PROD ? '/api/v1' : 'http://localhost:8080/api/v1';
 
 // Função auxiliar para injetar o token e gerenciar 401
 export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
