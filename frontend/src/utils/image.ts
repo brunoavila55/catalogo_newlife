@@ -1,13 +1,14 @@
 export const getImageUrl = (url?: string | null) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return `http://localhost:8080${url}`;
+  return import.meta.env.PROD ? url : `http://localhost:8080${url}`;
 };
 
 export const getThumbUrl = (url?: string | null) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return `http://localhost:8080${url.replace('.jpg', '_thumb.jpg')}`;
+  const thumbPath = url.replace('.jpg', '_thumb.jpg');
+  return import.meta.env.PROD ? thumbPath : `http://localhost:8080${thumbPath}`;
 };
 
 export const getProductMainImage = (product: any): string => {
