@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 5000 5000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g>
+        <path d="M1647.184,2297.494L2097.645,1667.716L2791.889,2261.94L2025.496,1176.384L3395.875,1176.384C3440.001,1176.384 3480.42,1201.07 3500.569,1240.327C3520.719,1279.585 3517.214,1326.816 3491.489,1362.668C3319.789,1601.972 3027.866,2008.83 2892.998,2196.799C2847.645,2260.009 2774.614,2297.494 2696.817,2297.494L1647.184,2297.494Z" style="fill:rgb(232,236,244);"/>
+        <g transform="matrix(1,0,0,1,-127.860027,-228.802153)">
+            <g transform="matrix(1250,0,0,1250,4982.235027,3500.077389)">
+            </g>
+            <text x="273.485px" y="3500.077px" style="font-family:'EtelkaTextPro-BoldItalic', 'Etelka Text Pro';font-weight:700;font-style:italic;font-size:1250px;fill:rgb(232,236,244);">new life</text>
+        </g>
+    </g>
+</svg>
