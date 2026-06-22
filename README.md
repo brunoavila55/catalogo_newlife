@@ -31,7 +31,7 @@ O site estará disponível em `http://localhost:5173`.
 
 ## Deploy em Produção (Docker)
 
-O projeto já está configurado para ambiente de produção com SSL (HTTPS) automático via Traefik.
+O projeto já está configurado para ser servido facilmente através de um Proxy Reverso (como o Nginx Proxy Manager).
 
 1. Clone o repositório no seu servidor de produção.
 2. Crie o arquivo de configuração e preencha com seus dados (JWT, usuário admin, etc):
@@ -43,4 +43,11 @@ O projeto já está configurado para ambiente de produção com SSL (HTTPS) auto
    docker compose up -d --build
    ```
 
-**Nota:** O `docker-compose.yml` está configurado para responder automaticamente pelo domínio `catalogo.newlifefibra.com.br` e gerará os certificados SSL via Let's Encrypt. Certifique-se de que os apontamentos DNS (tipo A) do domínio já estejam apontando para o IP público do seu servidor.
+Isso fará com que o Frontend fique exposto na porta `3000` e o Backend na porta `8080` do seu servidor. 
+
+**Configuração no Nginx Proxy Manager:**
+- Crie um Proxy Host para o seu domínio (ex: `catalogo.newlifefibra.com.br`) apontando para o IP do seu servidor na porta `3000`.
+- Na aba **Custom Locations**, adicione:
+  - Local: `/api` apontando para o IP na porta `8080`.
+  - Local: `/uploads` apontando para o IP na porta `8080`.
+Isso fará o roteamento correto para a interface e para a API!
