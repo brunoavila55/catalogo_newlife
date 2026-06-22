@@ -26,7 +26,10 @@ export default function AdminLogin() {
       const res = await api.post('/admin/login', { username, password });
       
       if (!res.ok) {
-        throw new Error('Credenciais inválidas');
+        if (res.status === 401) throw new Error('Credenciais inválidas');
+        if (res.status === 404) throw new Error('A rota da API não foi encontrada (404)');
+        if (res.status === 502) throw new Error('O NPM não conseguiu conectar na API (502 Gateway)');
+        throw new Error(`Erro do servidor: ${res.status}`);
       }
       
       const data = await res.json();
