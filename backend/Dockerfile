@@ -13,10 +13,12 @@ RUN go mod download
 
 COPY . .
 RUN go build -o main .
+RUN go build -o seedadmin ./cmd/seedadmin/main.go
 
 FROM alpine:3.18
 WORKDIR /app
 COPY --from=builder /app/main .
+COPY --from=builder /app/seedadmin .
 COPY --from=builder /app/catalogo.db* ./
 
 EXPOSE 8080
