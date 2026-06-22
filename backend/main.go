@@ -44,7 +44,6 @@ func main() {
 	})
 
 	// API Routes Setup
-	r.Use(middleware.Logger)
 
 	// Public GET routes
 	r.Get("/api/v1/products", getProductsHandler)
