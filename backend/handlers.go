@@ -111,22 +111,25 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 	var products []Product
 	for rows.Next() {
 		var p Product
-		var tagsJSON, imagesJSON, specsJSON string
-		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &p.Specs, &tagsJSON, &imagesJSON, &specsJSON); err != nil {
+		var specs, tagsJSON, imagesJSON, specsJSON sql.NullString
+		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON); err != nil {
+			log.Printf("Row scan error: %v", err)
 			continue
 		}
 		
-		json.Unmarshal([]byte(tagsJSON), &p.Tags)
+		p.Specs = specs.String
+		
+		json.Unmarshal([]byte(tagsJSON.String), &p.Tags)
 		if p.Tags == nil {
 			p.Tags = []string{}
 		}
 
-		json.Unmarshal([]byte(imagesJSON), &p.Images)
+		json.Unmarshal([]byte(imagesJSON.String), &p.Images)
 		if p.Images == nil {
 			p.Images = []string{}
 		}
 
-		json.Unmarshal([]byte(specsJSON), &p.SpecsMap)
+		json.Unmarshal([]byte(specsJSON.String), &p.SpecsMap)
 		if p.SpecsMap == nil {
 			p.SpecsMap = make(map[string]string)
 		}
@@ -496,26 +499,27 @@ func getTagsHandler(w http.ResponseWriter, r *http.Request) {
 func getProductBySlugHandler(w http.ResponseWriter, r *http.Request) {
 	slugParam := chi.URLParam(r, "slug")
 	var p Product
-	var tagsJSON, imagesJSON, specsJSON string
-
-	query := "SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json FROM products WHERE slug = ? AND deleted_at IS NULL"
-	err := db.QueryRow(query, slugParam).Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &p.Specs, &tagsJSON, &imagesJSON, &specsJSON)
-	
-	if err == sql.ErrNoRows {
-		http.Error(w, "Product not found", http.StatusNotFound)
-		return
-	} else if err != nil {
+	var specs, tagsJSON, imagesJSON, specsJSON sql.NullString
+	err := db.QueryRow("SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json FROM products WHERE slug = ? AND deleted_at IS NULL", slugParam).
+		Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Produto não encontrado", http.StatusNotFound)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.Unmarshal([]byte(tagsJSON), &p.Tags)
+	p.Specs = specs.String
+
+	json.Unmarshal([]byte(tagsJSON.String), &p.Tags)
 	if p.Tags == nil { p.Tags = []string{} }
 
-	json.Unmarshal([]byte(imagesJSON), &p.Images)
+	json.Unmarshal([]byte(imagesJSON.String), &p.Images)
 	if p.Images == nil { p.Images = []string{} }
 
-	json.Unmarshal([]byte(specsJSON), &p.SpecsMap)
+	json.Unmarshal([]byte(specsJSON.String), &p.SpecsMap)
 	if p.SpecsMap == nil { p.SpecsMap = make(map[string]string) }
 
 	w.Header().Set("Content-Type", "application/json")

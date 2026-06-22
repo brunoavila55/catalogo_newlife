@@ -59,12 +59,15 @@ export default function ProductList() {
       if (filter) params.append('filter', filter);
 
       const res = await api.get(`/products?${params.toString()}`);
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.error || `Erro HTTP ${res.status}`);
+      }
       const data = await res.json();
       setProducts(data.data || []);
       setPagination({ total: data.total, page: data.page, total_pages: data.total_pages });
-    } catch (e) {
-      toast.error('Erro ao carregar produtos');
+    } catch (e: any) {
+      toast.error(`Erro ao carregar produtos: ${e.message}`);
     } finally {
       setLoading(false);
     }
