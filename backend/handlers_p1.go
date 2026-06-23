@@ -140,45 +140,46 @@ func generateProductPDFHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
 	
 	pdf.SetFont("Arial", "B", 24)
-	pdf.CellFormat(190, 15, "Ficha Tecnica: "+p.Name, "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 15, tr("Ficha Técnica: "+p.Name), "0", 1, "C", false, 0, "")
 	
 	pdf.SetFont("Arial", "B", 12)
-	pdf.CellFormat(190, 10, "Marca: "+p.Brand+" | Categoria: "+p.Category, "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Marca: "+p.Brand+" | Categoria: "+p.Category), "0", 1, "C", false, 0, "")
 	
 	// If it has images, we could load them, but drawing images from remote/local URLs in gofpdf 
 	// can be tricky. Let's just output text specs for now.
 	pdf.Ln(10)
 	
 	pdf.SetFont("Arial", "B", 14)
-	pdf.CellFormat(190, 10, "Especificacoes:", "B", 1, "L", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Especificações:"), "B", 1, "L", false, 0, "")
 	
 	pdf.SetFont("Arial", "", 12)
 	if len(p.SpecsMap) > 0 {
 		for key, val := range p.SpecsMap {
 			pdf.SetFont("Arial", "B", 12)
-			pdf.CellFormat(60, 10, key+":", "1", 0, "L", false, 0, "")
+			pdf.CellFormat(60, 10, tr(key)+":", "1", 0, "L", false, 0, "")
 			pdf.SetFont("Arial", "", 12)
-			pdf.CellFormat(130, 10, val, "1", 1, "L", false, 0, "")
+			pdf.CellFormat(130, 10, tr(val), "1", 1, "L", false, 0, "")
 		}
 	} else if p.Specs != "" {
-		pdf.MultiCell(190, 10, p.Specs, "0", "L", false)
+		pdf.MultiCell(190, 10, tr(p.Specs), "0", "L", false)
 	} else {
-		pdf.CellFormat(190, 10, "Nenhuma especificacao detalhada.", "0", 1, "L", false, 0, "")
+		pdf.CellFormat(190, 10, tr("Nenhuma especificação detalhada."), "0", 1, "L", false, 0, "")
 	}
 
 	pdf.Ln(10)
 	pdf.SetFont("Arial", "B", 14)
-	pdf.CellFormat(190, 10, "Tags:", "B", 1, "L", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Tags:"), "B", 1, "L", false, 0, "")
 	pdf.SetFont("Arial", "", 12)
 	if len(p.Tags) > 0 {
-		pdf.MultiCell(190, 10, strings.Join(p.Tags, ", "), "0", "L", false)
+		pdf.MultiCell(190, 10, tr(strings.Join(p.Tags, ", ")), "0", "L", false)
 	}
 
 	pdf.Ln(20)
 	pdf.SetFont("Arial", "I", 10)
-	pdf.CellFormat(190, 10, "Documento gerado pelo sistema New Life Catalogo", "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Documento gerado pelo sistema New Life Catálogo"), "0", 1, "C", false, 0, "")
 
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.pdf\"", p.Slug))
@@ -282,46 +283,47 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	// Generate PDF
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
+	tr := pdf.UnicodeTranslatorFromDescriptor("")
 
 	pdf.SetFont("Arial", "B", 24)
 	title := req.ProjectName
 	if title == "" { title = "Projeto Técnico" }
-	pdf.CellFormat(190, 15, title, "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 15, tr(title), "0", 1, "C", false, 0, "")
 
 	pdf.SetFont("Arial", "", 12)
-	pdf.CellFormat(190, 10, "Data: "+time.Now().Format("02/01/2006"), "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Data: "+time.Now().Format("02/01/2006")), "0", 1, "C", false, 0, "")
 	pdf.Ln(5)
 
 	if req.ClientName != "" {
 		pdf.SetFont("Arial", "B", 12)
-		pdf.CellFormat(40, 10, "Cliente:", "0", 0, "L", false, 0, "")
+		pdf.CellFormat(40, 10, tr("Cliente:"), "0", 0, "L", false, 0, "")
 		pdf.SetFont("Arial", "", 12)
-		pdf.CellFormat(150, 10, req.ClientName, "0", 1, "L", false, 0, "")
+		pdf.CellFormat(150, 10, tr(req.ClientName), "0", 1, "L", false, 0, "")
 	}
 
 	if req.Responsible != "" {
 		pdf.SetFont("Arial", "B", 12)
-		pdf.CellFormat(40, 10, "Responsavel:", "0", 0, "L", false, 0, "")
+		pdf.CellFormat(40, 10, tr("Responsável:"), "0", 0, "L", false, 0, "")
 		pdf.SetFont("Arial", "", 12)
-		pdf.CellFormat(150, 10, req.Responsible, "0", 1, "L", false, 0, "")
+		pdf.CellFormat(150, 10, tr(req.Responsible), "0", 1, "L", false, 0, "")
 	}
 
 	if req.Notes != "" {
 		pdf.SetFont("Arial", "B", 12)
-		pdf.CellFormat(40, 10, "Observacoes:", "0", 0, "L", false, 0, "")
+		pdf.CellFormat(40, 10, tr("Observações:"), "0", 0, "L", false, 0, "")
 		pdf.SetFont("Arial", "", 12)
-		pdf.MultiCell(150, 10, req.Notes, "0", "L", false)
+		pdf.MultiCell(150, 10, tr(req.Notes), "0", "L", false)
 	}
 	
 	pdf.Ln(10)
 	pdf.SetFont("Arial", "B", 14)
-	pdf.CellFormat(190, 10, "Lista de Equipamentos", "B", 1, "L", false, 0, "")
+	pdf.CellFormat(190, 10, tr("Lista de Equipamentos"), "B", 1, "L", false, 0, "")
 	
 	pdf.SetFont("Arial", "B", 10)
-	pdf.CellFormat(100, 10, "Produto / Marca", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(20, 10, "Qtd", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(35, 10, "V. Unitario", "1", 0, "R", false, 0, "")
-	pdf.CellFormat(35, 10, "Subtotal", "1", 1, "R", false, 0, "")
+	pdf.CellFormat(100, 10, tr("Produto / Marca"), "1", 0, "L", false, 0, "")
+	pdf.CellFormat(20, 10, tr("Qtd"), "1", 0, "C", false, 0, "")
+	pdf.CellFormat(35, 10, tr("V. Unitário"), "1", 0, "R", false, 0, "")
+	pdf.CellFormat(35, 10, tr("Subtotal"), "1", 1, "R", false, 0, "")
 
 	pdf.SetFont("Arial", "", 10)
 	var grandTotal float64
@@ -346,8 +348,8 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 		subtotal := unitPrice * float64(qtd)
 		grandTotal += subtotal
 
-		pdf.CellFormat(100, 10, pd.Name+" ("+pd.Brand+")", "1", 0, "L", false, 0, "")
-		pdf.CellFormat(20, 10, fmt.Sprint(qtd), "1", 0, "C", false, 0, "")
+		pdf.CellFormat(100, 10, tr(pd.Name+" ("+pd.Brand+")"), "1", 0, "L", false, 0, "")
+		pdf.CellFormat(20, 10, tr(fmt.Sprint(qtd)), "1", 0, "C", false, 0, "")
 		
 		unitPriceStr := "R$ 0,00"
 		if unitPrice > 0 { unitPriceStr = fmt.Sprintf("R$ %.2f", unitPrice) }
@@ -365,12 +367,12 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	grandTotalStr := "R$ 0,00"
 	if grandTotal > 0 { grandTotalStr = fmt.Sprintf("R$ %.2f", grandTotal) }
 	grandTotalStr = strings.ReplaceAll(grandTotalStr, ".", ",")
-	pdf.CellFormat(155, 10, "Total Geral:", "0", 0, "R", false, 0, "")
+	pdf.CellFormat(155, 10, tr("Total Geral:"), "0", 0, "R", false, 0, "")
 	pdf.CellFormat(35, 10, grandTotalStr, "0", 1, "R", false, 0, "")
 
 	pdf.Ln(15)
 	pdf.SetFont("Arial", "I", 10)
-	pdf.CellFormat(190, 10, "New Life Fibra - Documento gerado automaticamente", "0", 1, "C", false, 0, "")
+	pdf.CellFormat(190, 10, tr("New Life Fibra - Documento gerado automaticamente"), "0", 1, "C", false, 0, "")
 
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "attachment; filename=\"projeto.pdf\"")
