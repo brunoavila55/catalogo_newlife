@@ -384,15 +384,17 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Frequência</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Frequência / Largura de Banda</label>
                 <select 
                   value={netFreq} onChange={e => setNetFreq(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 >
                   <option value="">Não aplicável</option>
-                  <option value="2.4 GHz">2.4 GHz</option>
-                  <option value="5 GHz">5 GHz</option>
-                  <option value="Dual-Band">Dual-Band</option>
+                  <option value="20 MHz">20 MHz</option>
+                  <option value="40 MHz">40 MHz</option>
+                  <option value="80 MHz">80 MHz</option>
+                  <option value="160 MHz">160 MHz</option>
+                  <option value="320 MHz">320 MHz</option>
                 </select>
               </div>
 

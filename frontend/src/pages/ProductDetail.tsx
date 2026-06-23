@@ -229,7 +229,7 @@ export default function ProductDetail() {
                     <Activity size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Frequência</span>
+                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Freq / Largura de Banda</span>
                     <span className="text-sm text-slate-200 font-semibold">{netSpecs.freq}</span>
                   </div>
                 </div>
