@@ -14,15 +14,11 @@ export default function Layout() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // On home page, header starts transparent over the hero
-  const headerBg = isHome
-    ? scrolled ? 'bg-surface-dark/80 backdrop-blur-lg border-b border-slate-800/60 shadow-lg shadow-black/20' : 'bg-transparent border-b border-transparent'
-    : 'bg-surface-dark/90 backdrop-blur-lg border-b border-slate-800/60';
+  const headerBg = 'bg-surface-dark/90 backdrop-blur-lg border-b border-slate-800/60';
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      {!isHome && (
-        <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${headerBg}`}>
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${headerBg}`}>
           <div className="container mx-auto px-6 py-4 flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2 group">
               <img src="/favicon.svg" alt="NL Logo" className="w-8 h-8 group-hover:scale-110 transition-transform" />
@@ -35,6 +31,9 @@ export default function Layout() {
             <nav className="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-semibold">
               <Link to="/catalogo" className="text-slate-300 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-0 after:bg-brand after:transition-all hover:after:w-full">
                 Catálogo
+              </Link>
+              <Link to="/projetos" className="text-slate-300 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-0 after:bg-brand after:transition-all hover:after:w-full">
+                Projetos
               </Link>
             </nav>
 
@@ -49,10 +48,12 @@ export default function Layout() {
               <Link to="/catalogo" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-white transition-colors">
                 Catálogo
               </Link>
+              <Link to="/projetos" onClick={() => setMenuOpen(false)} className="text-slate-300 hover:text-white transition-colors">
+                Projetos
+              </Link>
             </nav>
           </div>
         </header>
-      )}
 
       <main className="flex-grow flex flex-col">
         <Outlet />
