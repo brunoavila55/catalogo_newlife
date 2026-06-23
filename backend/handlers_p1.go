@@ -435,8 +435,16 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	pdf.SetFont("Arial", "I", 10)
 	pdf.CellFormat(190, 10, tr("New Life Fibra - Documento gerado automaticamente"), "0", 1, "C", false, 0, "")
 
+	pdfName := title
+	pdfName = strings.ReplaceAll(pdfName, " ", "_")
+	pdfName = strings.ReplaceAll(pdfName, "\"", "")
+	pdfName = strings.ReplaceAll(pdfName, "/", "-")
+	if pdfName == "" {
+		pdfName = "projeto"
+	}
+	
 	w.Header().Set("Content-Type", "application/pdf")
-	w.Header().Set("Content-Disposition", "attachment; filename=\"projeto.pdf\"")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.pdf\"", pdfName))
 	
 	err = pdf.Output(w)
 	if err != nil {
