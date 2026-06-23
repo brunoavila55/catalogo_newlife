@@ -18,9 +18,20 @@ import (
 )
 
 func findImageFile(names ...string) string {
+    pathsToTry := []string{
+        ".",
+        "backend",
+        "..\\backend",
+        "C:\\newlife_catalogo\\backend",
+    }
+    
 	for _, name := range names {
-		if _, err := os.Stat(name); err == nil { return name }
-		if _, err := os.Stat(filepath.Join("backend", name)); err == nil { return filepath.Join("backend", name) }
+        for _, dir := range pathsToTry {
+            fullPath := filepath.Join(dir, name)
+            if _, err := os.Stat(fullPath); err == nil {
+                return fullPath
+            }
+        }
 	}
 	return ""
 }
