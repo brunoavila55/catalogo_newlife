@@ -175,7 +175,7 @@ func generateProductPDFHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		})
-		if headerImage != "" { pdf.SetTopMargin(35) }
+		if headerImage != "" { pdf.SetTopMargin(55) }
 		if footerImage != "" { pdf.SetAutoPageBreak(true, 30) }
 	}
 
@@ -339,7 +339,7 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		})
-		if headerImage != "" { pdf.SetTopMargin(35) }
+		if headerImage != "" { pdf.SetTopMargin(55) }
 		if footerImage != "" { pdf.SetAutoPageBreak(true, 30) }
 	}
 
