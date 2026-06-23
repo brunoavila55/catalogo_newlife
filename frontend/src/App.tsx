@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/Home';
 import Catalog from './pages/Catalog';
 import ProductDetail from './pages/ProductDetail';
 import Compare from './pages/Compare';
@@ -42,7 +41,7 @@ function App() {
 
             {/* Rotas Públicas */}
             <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
+              <Route index element={<Navigate to="/catalogo" replace />} />
               <Route path="catalogo" element={<Catalog />} />
               <Route path="catalogo/:categoria" element={<Catalog />} />
               <Route path="produto/:slug" element={<ProductDetail />} />
