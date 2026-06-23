@@ -235,16 +235,6 @@ export default function ProductDetail() {
             >
               <FolderPlus size={18} /> Adicionar ao Projeto
             </button>
-
-            <a
-              href={`${BASE_URL}/products/${product.slug}/pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 border border-slate-700 bg-transparent text-slate-300 hover:border-blue-400 hover:text-blue-400 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
-            >
-              <Download size={18} /> Ficha Técnica
-            </a>
-
           </div>
 
           {/* Network Specs Highlights */}
