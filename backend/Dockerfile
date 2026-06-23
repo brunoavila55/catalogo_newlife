@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=builder /app/main .
 COPY --from=builder /app/seedadmin .
 COPY --from=builder /app/catalogo.db* ./
+COPY --from=builder /app/*.png ./
 
 EXPOSE 8080
 CMD ["./main"]
