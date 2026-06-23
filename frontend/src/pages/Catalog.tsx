@@ -299,21 +299,6 @@ export default function Catalog() {
                     <div className="w-full h-full flex items-center justify-center"><Zap size={32} className="text-slate-700" /></div>
                   )}
                   
-                  {/* Status badge */}
-                  <div className="absolute top-3 left-3">
-                    {p.status === 'Em estoque' ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 backdrop-blur-sm border border-emerald-500/20">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Disponível
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-500/15 text-red-400 backdrop-blur-sm border border-red-500/20">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                        Em falta
-                      </span>
-                    )}
-                  </div>
-
                   {/* Compare button */}
                   <button 
                     onClick={(e) => {
