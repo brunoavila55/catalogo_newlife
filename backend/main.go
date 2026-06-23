@@ -152,6 +152,17 @@ func initDB() {
 		log.Printf("Migrated %d product images_json paths to /api/v1/uploads/", n)
 	}
 
+	// Seed default categories if table is empty
+	var catCount int
+	db.QueryRow("SELECT COUNT(*) FROM categories WHERE deleted_at IS NULL").Scan(&catCount)
+	if catCount == 0 {
+		defaultCategories := []string{"Residencial", "Empresarial", "FTTH", "Datacenter"}
+		for _, cat := range defaultCategories {
+			db.Exec("INSERT OR IGNORE INTO categories (name) VALUES (?)", cat)
+		}
+		log.Println("Seeded default categories")
+	}
+
 	// Performance Optimization PRAGMAS
 	_, err = db.Exec(`
 		PRAGMA journal_mode = WAL;
