@@ -140,18 +140,25 @@ func generateProductPDFHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var templateImage string
-	if _, err := os.Stat("template.png"); err == nil {
-		templateImage = "template.png"
-	} else if _, err := os.Stat("template.jpg"); err == nil {
-		templateImage = "template.jpg"
-	}
+	var headerImage, footerImage string
+	if _, err := os.Stat("header.png"); err == nil { headerImage = "header.png" } else if _, err := os.Stat("header.jpg"); err == nil { headerImage = "header.jpg" }
+	if _, err := os.Stat("footer.png"); err == nil { footerImage = "footer.png" } else if _, err := os.Stat("footer.jpg"); err == nil { footerImage = "footer.jpg" }
 
-	if templateImage != "" {
+	if headerImage != "" || footerImage != "" {
 		pdf.SetHeaderFunc(func() {
-			pdf.Image(templateImage, 0, 0, 210, 297, false, "", 0, "")
+			if headerImage != "" { pdf.Image(headerImage, 0, 0, 210, 0, false, "", 0, "") }
 		})
-		pdf.SetTopMargin(40)
+		pdf.SetFooterFunc(func() {
+			if footerImage != "" {
+				info := pdf.RegisterImage(footerImage, "")
+				if info != nil {
+					h := info.Height() * (210.0 / info.Width())
+					pdf.Image(footerImage, 0, 297-h, 210, 0, false, "", 0, "")
+				}
+			}
+		})
+		if headerImage != "" { pdf.SetTopMargin(35) }
+		if footerImage != "" { pdf.SetAutoPageBreak(true, 30) }
 	}
 
 	pdf.AddPage()
@@ -298,18 +305,25 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	// Generate PDF
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var templateImage string
-	if _, err := os.Stat("template.png"); err == nil {
-		templateImage = "template.png"
-	} else if _, err := os.Stat("template.jpg"); err == nil {
-		templateImage = "template.jpg"
-	}
+	var headerImage, footerImage string
+	if _, err := os.Stat("header.png"); err == nil { headerImage = "header.png" } else if _, err := os.Stat("header.jpg"); err == nil { headerImage = "header.jpg" }
+	if _, err := os.Stat("footer.png"); err == nil { footerImage = "footer.png" } else if _, err := os.Stat("footer.jpg"); err == nil { footerImage = "footer.jpg" }
 
-	if templateImage != "" {
+	if headerImage != "" || footerImage != "" {
 		pdf.SetHeaderFunc(func() {
-			pdf.Image(templateImage, 0, 0, 210, 297, false, "", 0, "")
+			if headerImage != "" { pdf.Image(headerImage, 0, 0, 210, 0, false, "", 0, "") }
 		})
-		pdf.SetTopMargin(40)
+		pdf.SetFooterFunc(func() {
+			if footerImage != "" {
+				info := pdf.RegisterImage(footerImage, "")
+				if info != nil {
+					h := info.Height() * (210.0 / info.Width())
+					pdf.Image(footerImage, 0, 297-h, 210, 0, false, "", 0, "")
+				}
+			}
+		})
+		if headerImage != "" { pdf.SetTopMargin(35) }
+		if footerImage != "" { pdf.SetAutoPageBreak(true, 30) }
 	}
 
 	pdf.AddPage()
