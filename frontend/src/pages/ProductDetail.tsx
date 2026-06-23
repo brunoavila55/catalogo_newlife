@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Download, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus } from 'lucide-react';
-import { api } from '../services/api';
+import { api, BASE_URL } from '../services/api';
 import { useCompare } from '../context/CompareContext';
+import { useProject } from '../context/ProjectContext';
+import { useToast } from '../context/ToastContext';
 import { getImageUrl } from '../utils/image';
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   
   const { compareList, addToCompare, removeFromCompare } = useCompare();
+  const { addItem } = useProject();
+  const toast = useToast();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -20,6 +25,20 @@ export default function ProductDetail() {
         if (res.ok) {
           const data = await res.json();
           setProduct(data);
+          
+          // Buscar produtos relacionados (mesma categoria)
+          try {
+            const relRes = await api.get(`/products?q=&limit=50`);
+            if (relRes.ok) {
+              const relData = await relRes.json();
+              const filtered = (relData.data || [])
+                .filter((p: any) => p.category === data.category && p.id !== data.id)
+                .slice(0, 4);
+              setRelatedProducts(filtered);
+            }
+          } catch (e) {
+            console.error("Erro ao buscar relacionados", e);
+          }
         } else {
           setProduct(null);
         }
@@ -207,6 +226,25 @@ export default function ProductDetail() {
               )}
             </button>
 
+            <button
+              onClick={() => {
+                addItem(product, 1);
+                toast.success('Equipamento adicionado ao Projeto!');
+              }}
+              className="flex items-center gap-2 border border-slate-700 bg-transparent text-slate-300 hover:border-emerald-400 hover:text-emerald-400 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
+            >
+              <FolderPlus size={18} /> Adicionar ao Projeto
+            </button>
+
+            <a
+              href={`${BASE_URL}/products/${product.slug}/pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 border border-slate-700 bg-transparent text-slate-300 hover:border-blue-400 hover:text-blue-400 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
+            >
+              <Download size={18} /> Ficha Técnica
+            </a>
+
           </div>
 
           {/* Network Specs Highlights */}
@@ -320,6 +358,45 @@ export default function ProductDetail() {
             {product.specs.split('\n').map((line: string, i: number) => (
               <p key={i} className={line.trim() === '' ? 'h-4' : 'mb-4 text-slate-300 text-[15px]'}>{line}</p>
             ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-20 pt-10 border-t border-slate-800/60">
+          <h2 className="text-2xl font-bold text-white mb-8">Produtos Relacionados</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {relatedProducts.map(p => {
+              const isInCompare = compareList.find(c => c.id === p.id);
+              return (
+                <div key={p.id} className="group relative rounded-2xl overflow-hidden bg-surface border border-slate-800/60 hover:border-brand/40 transition-all duration-500 cursor-pointer" onClick={() => window.location.href = `/produto/${p.slug}`}>
+                  <div className="aspect-[4/3] bg-surface-dark relative overflow-hidden flex items-center justify-center p-4">
+                    {p.image_url ? (
+                      <img src={getImageUrl(p.image_url)} alt={p.name} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <Zap size={32} className="text-slate-700" />
+                    )}
+                    
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isInCompare) removeFromCompare(p.id);
+                        else addToCompare(p);
+                      }}
+                      className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-white border border-brand' : 'bg-slate-900/70 text-slate-400 border border-slate-700/50 opacity-0 group-hover:opacity-100 hover:text-white hover:border-slate-500'}`}
+                      title={isInCompare ? "Remover do comparativo" : "Adicionar ao comparativo"}
+                    >
+                      {isInCompare ? <CheckCircle2 size={16} /> : <PlusCircle size={16} />}
+                    </button>
+                  </div>
+                  <div className="p-4">
+                    <span className="text-[10px] text-brand font-bold uppercase tracking-[0.15em] block mb-1">{p.category}</span>
+                    <h3 className="text-sm text-white font-condensed group-hover:text-brand transition-colors duration-300 line-clamp-1">{p.name}</h3>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

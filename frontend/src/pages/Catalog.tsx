@@ -5,13 +5,15 @@ import { api } from '../services/api';
 import { X, ExternalLink, Search, ChevronLeft, ChevronRight, Trash2, PlusCircle, CheckCircle2, Zap, SlidersHorizontal, FolderPlus } from 'lucide-react';
 import FocusTrap from 'focus-trap-react';
 import { useCompare } from '../context/CompareContext';
+import { useProject } from '../context/ProjectContext';
+import { useToast } from '../context/ToastContext';
 import { getProductMainImage, getProductSecondImage } from '../utils/image';
 
 export default function Catalog() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
-  const fixedCategories = ['Residencial', 'Empresarial', 'FTTH', 'Datacenter'];
+  const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
   const [productTypes, setProductTypes] = useState<string[]>([]);
   
@@ -21,6 +23,8 @@ export default function Catalog() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   
   const { compareList, addToCompare, removeFromCompare } = useCompare();
+  const { addItem } = useProject();
+  const toast = useToast();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
@@ -34,12 +38,14 @@ export default function Catalog() {
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const [tagRes, typesRes] = await Promise.all([
+        const [tagRes, typesRes, catRes] = await Promise.all([
           api.get('/tags'),
-          api.get('/types')
+          api.get('/types'),
+          api.get('/categories')
         ]);
         setTags(await tagRes.json() || []);
         setProductTypes(await typesRes.json() || []);
+        setCategories(await catRes.json() || []);
       } catch (e) {
         console.error("Erro ao buscar filtros", e);
       }
@@ -49,7 +55,7 @@ export default function Catalog() {
 
   useEffect(() => {
     const cat = searchParams.get('categoria');
-    if (cat && fixedCategories.includes(cat)) {
+    if (cat) {
       setSelectedCategory(cat);
       // Opcional: Expandir os filtros se vier com categoria selecionada na URL
       if (!showFilters) setShowFilters(true);
@@ -182,13 +188,13 @@ export default function Catalog() {
               >
                 Todos
               </button>
-              {fixedCategories.map(catName => (
+              {categories.map(cat => (
                 <button 
-                  key={catName}
-                  onClick={() => setSelectedCategory(catName)}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === catName ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.name)}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === cat.name ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
                 >
-                  {catName}
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -319,6 +325,19 @@ export default function Catalog() {
                     title={isInCompare ? "Remover do comparativo" : "Adicionar ao comparativo"}
                   >
                     {isInCompare ? <CheckCircle2 size={16} /> : <PlusCircle size={16} />}
+                  </button>
+
+                  {/* Add to project button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addItem(p, 1);
+                      toast.success('Adicionado ao projeto!');
+                    }}
+                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-slate-900/70 text-slate-400 border border-slate-700/50 opacity-0 group-hover:opacity-100 hover:text-emerald-400 hover:border-emerald-500"
+                    title="Adicionar ao Projeto"
+                  >
+                    <FolderPlus size={16} />
                   </button>
 
                   <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

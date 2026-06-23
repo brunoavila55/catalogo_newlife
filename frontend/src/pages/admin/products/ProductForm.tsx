@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '../../../services/api';
 import { useToast } from '../../../context/ToastContext';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, UploadCloud, X, Plus, GripVertical, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { ArrowLeft, Save, UploadCloud, X, Plus, GripVertical, ChevronLeft, ChevronRight, Trash2, FileText } from 'lucide-react';
 import { getThumbUrl } from '../../../utils/image';
 
 interface Category { id: number; name: string; }
@@ -24,6 +24,7 @@ export default function ProductForm() {
   const [specs, setSpecs] = useState<{key: string, value: string}[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [pdfFiles, setPdfFiles] = useState<{name: string, url: string}[]>([]);
 
   // Network specific fields
   const [netWifi, setNetWifi] = useState('');
@@ -34,7 +35,7 @@ export default function ProductForm() {
   const [netMgmt, setNetMgmt] = useState('');
   const [netAntennas, setNetAntennas] = useState('');
 
-  const fixedCategories = ['Residencial', 'Empresarial', 'FTTH', 'Datacenter'];
+  const [categoriesList, setCategoriesList] = useState<Category[]>([]);
 
   const [tagsList, setTagsList] = useState<Tag[]>([]);
   const [newTagInput, setNewTagInput] = useState('');
@@ -46,14 +47,18 @@ export default function ProductForm() {
 
   const toast = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const cloneData = location.state?.cloneData;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tagRes] = await Promise.all([
-          api.get('/tags')
+        const [tagRes, catRes] = await Promise.all([
+          api.get('/tags'),
+          api.get('/categories')
         ]);
         setTagsList(await tagRes.json() || []);
+        setCategoriesList(await catRes.json() || []);
 
         if (isEditing) {
           const prodRes = await api.get(`/products?q=&limit=1000`);
@@ -90,6 +95,38 @@ export default function ProductForm() {
             toast.error("Produto não encontrado");
             navigate('/gestor-nlf-admin/produtos');
           }
+        } else if (cloneData) {
+          const p = cloneData;
+          setName(`Cópia de ${p.name}`);
+          setBrand(p.brand);
+          setCategory(p.category);
+          setStatus(p.status);
+          setDescription(p.specs || ''); // Old specs text field
+          setSelectedTags(p.tags || []);
+          setImages(p.images_json || (p.image_url ? [p.image_url] : []));
+          
+          if (p.specs_json) {
+            setProductType(p.specs_json['_type'] || '');
+            setStockCount(p.specs_json['_stock_count'] || '');
+            setPrice(p.specs_json['_price'] || '');
+            setNetWifi(p.specs_json['_net_wifi'] || '');
+            setNetFreq(p.specs_json['_net_freq'] || '');
+            setNetPorts(p.specs_json['_net_ports'] || '');
+            setNetSpeed(p.specs_json['_net_speed'] || '');
+            setNetPower(p.specs_json['_net_power'] || '');
+            setNetMgmt(p.specs_json['_net_mgmt'] || '');
+            setNetAntennas(p.specs_json['_net_antennas'] || '');
+
+            if (p.specs_json['_files']) {
+              try { setPdfFiles(JSON.parse(p.specs_json['_files'])); } catch {}
+            }
+
+            const specArray = Object.entries(p.specs_json)
+              .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_'))
+              .map(([k, v]) => ({ key: k, value: v as string }));
+            setSpecs(specArray);
+          }
+          setLoading(false);
         }
       } catch (e) {
         toast.error("Erro ao carregar formulário");
@@ -125,6 +162,33 @@ export default function ProductForm() {
     }
     
     setImages(newImages);
+  };
+
+  const filePdfRef = useRef<HTMLInputElement>(null);
+
+  const handlePdfUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    const newFiles = [...pdfFiles];
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type !== 'application/pdf') continue;
+      
+      const formData = new FormData();
+      formData.append('image', file); // Mantemos a chave 'image' pois o backend p1.go espera isso
+      
+      try {
+        const res = await api.post('/upload', formData);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        newFiles.push({ name: file.name, url: data.url });
+      } catch (e) {
+        toast.error(`Falha ao enviar arquivo ${file.name}`);
+      }
+    }
+    
+    setPdfFiles(newFiles);
   };
 
   const removeImage = (index: number) => {
@@ -206,6 +270,7 @@ export default function ProductForm() {
       if (stockCount && status === 'Em estoque') specsMap['_stock_count'] = stockCount;
       if (productType.trim()) specsMap['_type'] = productType.trim();
       if (price.trim()) specsMap['_price'] = price.trim();
+      if (pdfFiles.length > 0) specsMap['_files'] = JSON.stringify(pdfFiles);
 
       const payload = {
         name,
@@ -359,6 +424,42 @@ export default function ProductForm() {
                 type="file" multiple accept="image/*" className="hidden" 
                 ref={fileInputRef}
                 onChange={(e) => handleUpload(e.target.files)}
+              />
+            </div>
+          </div>
+
+          {/* Anexos e Manuais */}
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+            <h3 className="text-lg font-medium text-slate-200 mb-4">Manuais e Datasheets (PDF)</h3>
+            
+            {pdfFiles.length > 0 && (
+              <div className="space-y-3 mb-4">
+                {pdfFiles.map((pdf, idx) => (
+                  <div key={idx} className="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-lg p-3">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <div className="w-10 h-10 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center flex-shrink-0">
+                        <FileText size={20} />
+                      </div>
+                      <span className="text-sm font-medium text-slate-300 truncate">{pdf.name}</span>
+                    </div>
+                    <button type="button" onClick={() => setPdfFiles(pdfFiles.filter((_, i) => i !== idx))} className="text-slate-500 hover:text-red-400 p-2 transition-colors">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div 
+              className="border-2 border-dashed border-slate-800 hover:border-slate-700 bg-slate-950 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors"
+              onClick={() => filePdfRef.current?.click()}
+            >
+              <FileText size={28} className="text-slate-500 mb-2" />
+              <p className="text-slate-300 font-medium mb-1 text-sm">Adicionar PDF</p>
+              <input 
+                type="file" multiple accept="application/pdf" className="hidden" 
+                ref={filePdfRef}
+                onChange={(e) => handlePdfUpload(e.target.files)}
               />
             </div>
           </div>
@@ -528,7 +629,7 @@ export default function ProductForm() {
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
               >
                 <option value="">Selecione uma categoria...</option>
-                {fixedCategories.map(c => <option key={c} value={c}>{c}</option>)}
+                {categoriesList.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
               </select>
             </div>
 

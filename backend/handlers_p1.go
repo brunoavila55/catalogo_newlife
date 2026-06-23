@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image/jpeg"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -37,7 +38,7 @@ func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	contentType := header.Header.Get("Content-Type")
-	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/webp" {
+	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/webp" && contentType != "application/pdf" {
 		writeJSONError(w, "invalid_content_type", http.StatusBadRequest)
 		return
 	}
@@ -51,6 +52,33 @@ func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
 	if ext == "" {
 		ext = ".jpg"
 	}
+	uid := uuid.New().String()
+
+	if contentType == "application/pdf" {
+		filename := uid + ".pdf"
+		outPath := filepath.Join(uploadDir, filename)
+		outFile, err := os.Create(outPath)
+		if err != nil {
+			http.Error(w, "Server error", http.StatusInternalServerError)
+			return
+		}
+		defer outFile.Close()
+		
+		_, err = io.Copy(outFile, file)
+		if err != nil {
+			http.Error(w, "Failed to save file", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{
+			"url": "/api/v1/uploads/" + filename,
+		})
+		return
+	}
+
+	filename := uid + ".jpg"
+	thumbFilename := uid + "_thumb.jpg"
 	
 	// Open and decode image
 	srcImage, err := imaging.Decode(file)
@@ -59,10 +87,6 @@ func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uid := uuid.New().String()
-	filename := uid + ".jpg"
-	thumbFilename := uid + "_thumb.jpg"
-	
 	// Save optimized original (e.g. max 1920px width)
 	var resized = srcImage
 	if srcImage.Bounds().Dx() > 1920 {

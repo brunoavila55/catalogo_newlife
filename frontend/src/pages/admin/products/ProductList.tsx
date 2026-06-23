@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../../../services/api';
 import { useToast } from '../../../context/ToastContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Plus, Edit2, Trash2, Search, Filter, ImageIcon, ChevronLeft, ChevronRight, Package } from 'lucide-react';
+import { Plus, Edit2, Trash2, Search, Filter, ImageIcon, ChevronLeft, ChevronRight, Package, Copy } from 'lucide-react';
 import ConfirmModal from '../../../components/ui/ConfirmModal';
 import { getProductThumbImage } from '../../../utils/image';
 
@@ -91,6 +91,20 @@ export default function ProductList() {
       toast.error('Erro ao excluir produto.');
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const handleDuplicate = async (product: Product) => {
+    try {
+      const res = await api.get(`/products/${product.slug}`);
+      if (res.ok) {
+        const fullProduct = await res.json();
+        navigate('/gestor-nlf-admin/produtos/novo', { state: { cloneData: fullProduct } });
+      } else {
+        toast.error("Erro ao buscar dados do produto para clonar.");
+      }
+    } catch (e) {
+      toast.error("Erro ao tentar duplicar.");
     }
   };
 
@@ -215,6 +229,13 @@ export default function ProductList() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
+                          <button 
+                            onClick={() => handleDuplicate(product)}
+                            className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors"
+                            title="Duplicar"
+                          >
+                            <Copy size={18} />
+                          </button>
                           <button 
                             onClick={() => navigate(`/gestor-nlf-admin/produtos/${product.id}/editar`)}
                             className="p-2 text-slate-400 hover:text-brand hover:bg-slate-800 rounded-lg transition-colors"
