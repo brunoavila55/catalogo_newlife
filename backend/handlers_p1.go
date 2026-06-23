@@ -17,6 +17,14 @@ import (
 	"github.com/phpdave11/gofpdf"
 )
 
+func findImageFile(names ...string) string {
+	for _, name := range names {
+		if _, err := os.Stat(name); err == nil { return name }
+		if _, err := os.Stat(filepath.Join("backend", name)); err == nil { return filepath.Join("backend", name) }
+	}
+	return ""
+}
+
 func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse max 5MB form
 	err := r.ParseMultipartForm(5 << 20)
@@ -140,9 +148,8 @@ func generateProductPDFHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var headerImage, footerImage string
-	if _, err := os.Stat("header.png"); err == nil { headerImage = "header.png" } else if _, err := os.Stat("header.jpg"); err == nil { headerImage = "header.jpg" }
-	if _, err := os.Stat("footer.png"); err == nil { footerImage = "footer.png" } else if _, err := os.Stat("footer.jpg"); err == nil { footerImage = "footer.jpg" }
+	headerImage := findImageFile("header.png", "header.jpg")
+	footerImage := findImageFile("footer.png", "footer.jpg")
 
 	if headerImage != "" || footerImage != "" {
 		pdf.SetHeaderFunc(func() {
@@ -305,9 +312,8 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	// Generate PDF
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var headerImage, footerImage string
-	if _, err := os.Stat("header.png"); err == nil { headerImage = "header.png" } else if _, err := os.Stat("header.jpg"); err == nil { headerImage = "header.jpg" }
-	if _, err := os.Stat("footer.png"); err == nil { footerImage = "footer.png" } else if _, err := os.Stat("footer.jpg"); err == nil { footerImage = "footer.jpg" }
+	headerImage := findImageFile("header.png", "header.jpg")
+	footerImage := findImageFile("footer.png", "footer.jpg")
 
 	if headerImage != "" || footerImage != "" {
 		pdf.SetHeaderFunc(func() {
