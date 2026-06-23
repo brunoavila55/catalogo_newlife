@@ -4,6 +4,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Zap } from 'lucide-react';
 import { getProductMainImage } from '../utils/image';
 
+const KEY_LABELS: Record<string, string> = {
+  '_type': 'Tipo de Equipamento',
+  '_price': 'Preço Estimado',
+  '_stock_count': 'Quantidade em Estoque',
+  '_net_wifi': 'Padrão Wi-Fi',
+  '_net_freq': 'Frequência / Largura de Banda',
+  '_net_ports': 'Portas Disponíveis',
+  '_net_speed': 'Classe / Velocidade',
+  '_net_power': 'Alimentação',
+  '_net_mgmt': 'Gerenciamento',
+  '_net_antennas': 'Antenas'
+};
+
 export default function Compare() {
   const { compareList, removeFromCompare } = useCompare();
   const navigate = useNavigate();
@@ -121,7 +134,7 @@ export default function Compare() {
             ) : (
               allKeys.map((key, idx) => (
                 <tr key={key} className={idx % 2 === 0 ? '' : 'bg-surface-dark/20'}>
-                  <td className="p-4 border-b border-slate-800/40 bg-surface-dark font-semibold text-sm text-slate-500 sticky left-0 z-10">{key}</td>
+                  <td className="p-4 border-b border-slate-800/40 bg-surface-dark font-semibold text-sm text-slate-500 sticky left-0 z-10">{KEY_LABELS[key] || key}</td>
                   {compareList.map(p => {
                     const val = p.specs_json && p.specs_json[key];
                     return (
