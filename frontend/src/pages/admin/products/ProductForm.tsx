@@ -223,12 +223,15 @@ export default function ProductForm() {
         ? await api.put(`/products/${id}`, payload)
         : await api.post(`/products`, payload);
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.error || `Erro HTTP ${res.status}`);
+      }
 
       toast.success(`Produto ${isEditing ? 'atualizado' : 'criado'} com sucesso!`);
       navigate('/gestor-nlf-admin/produtos');
-    } catch (e) {
-      toast.error('Erro ao salvar produto');
+    } catch (e: any) {
+      toast.error(`Erro ao salvar produto: ${e.message}`);
     } finally {
       setSaving(false);
     }
@@ -394,7 +397,7 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Interfaces / Portas</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Portas Disponíveis</label>
                 <input 
                   type="text" placeholder="Ex: 4x LAN Gigabit, 1x WAN"
                   value={netPorts} onChange={e => setNetPorts(e.target.value)}
@@ -403,16 +406,16 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Taxa de Transmissão (Throughput)</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Classe Wi-Fi / Velocidade</label>
                 <input 
-                  type="text" placeholder="Ex: Até 1200 Mbps"
+                  type="text" placeholder="Ex: AX1800, AX3000, 1200Mbps"
                   value={netSpeed} onChange={e => setNetSpeed(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Alimentação e PoE</label>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Alimentação</label>
                 <input 
                   type="text" placeholder="Ex: 12V DC, PoE Passivo"
                   value={netPower} onChange={e => setNetPower(e.target.value)}

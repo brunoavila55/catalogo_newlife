@@ -240,7 +240,7 @@ export default function ProductDetail() {
                     <Network size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Interfaces</span>
+                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Portas Disponíveis</span>
                     <span className="text-sm text-slate-200 font-semibold">{netSpecs.ports}</span>
                   </div>
                 </div>
@@ -251,7 +251,7 @@ export default function ProductDetail() {
                     <Zap size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Velocidade</span>
+                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">Classe / Velocidade</span>
                     <span className="text-sm text-slate-200 font-semibold">{netSpecs.speed}</span>
                   </div>
                 </div>
