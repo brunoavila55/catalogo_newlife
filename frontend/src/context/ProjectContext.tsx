@@ -116,10 +116,14 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   const addItem = (product: any, quantity: number) => {
     let targetProjectId = activeProject?.id;
     
-    // Auto-create project if none is active
     if (!targetProjectId) {
-      const p = createProject();
-      targetProjectId = p.id;
+      if (projects.length > 0) {
+        const latestProject = [...projects].sort((a, b) => b.updatedAt - a.updatedAt)[0];
+        targetProjectId = latestProject.id;
+        setActiveProject(targetProjectId);
+      } else {
+        throw new Error("no_project");
+      }
     }
 
     setProjects(prev => prev.map(p => {

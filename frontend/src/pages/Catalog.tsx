@@ -316,8 +316,12 @@ export default function Catalog() {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      addItem(p, 1);
-                      toast.success('Adicionado ao projeto!');
+                      try {
+                        addItem(p, 1);
+                        toast.success('Adicionado ao projeto!');
+                      } catch (err) {
+                        toast.error('Crie um projeto primeiro na aba Projetos!');
+                      }
                     }}
                     className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-slate-900/70 text-slate-400 border border-slate-700/50 opacity-0 group-hover:opacity-100 hover:text-emerald-400 hover:border-emerald-500"
                     title="Adicionar ao Projeto"

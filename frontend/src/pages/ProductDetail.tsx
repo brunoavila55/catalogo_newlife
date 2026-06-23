@@ -228,8 +228,12 @@ export default function ProductDetail() {
 
             <button
               onClick={() => {
-                addItem(product, 1);
-                toast.success('Equipamento adicionado ao Projeto!');
+                try {
+                  addItem(product, 1);
+                  toast.success('Equipamento adicionado ao Projeto!');
+                } catch (err) {
+                  toast.error('Crie um projeto primeiro na aba Projetos!');
+                }
               }}
               className="flex items-center gap-2 border border-slate-700 bg-transparent text-slate-300 hover:border-emerald-400 hover:text-emerald-400 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
             >
