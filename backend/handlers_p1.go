@@ -15,7 +15,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/phpdave11/gofpdf"
-	"github.com/phpdave11/gofpdf/contrib/gofpdi"
 )
 
 func uploadImageHandler(w http.ResponseWriter, r *http.Request) {
@@ -141,16 +140,16 @@ func generateProductPDFHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var tpl int
-	hasTemplate := false
-	if _, err := os.Stat("template.pdf"); err == nil {
-		tpl = gofpdi.ImportPage(pdf, "template.pdf", 1, "/MediaBox")
-		hasTemplate = true
+	var templateImage string
+	if _, err := os.Stat("template.png"); err == nil {
+		templateImage = "template.png"
+	} else if _, err := os.Stat("template.jpg"); err == nil {
+		templateImage = "template.jpg"
 	}
 
-	if hasTemplate {
+	if templateImage != "" {
 		pdf.SetHeaderFunc(func() {
-			gofpdi.UseImportedTemplate(pdf, tpl, 0, 0, 210, 297)
+			pdf.Image(templateImage, 0, 0, 210, 297, false, "", 0, "")
 		})
 		pdf.SetTopMargin(40)
 	}
@@ -299,16 +298,16 @@ func generateProjectPDFHandler(w http.ResponseWriter, r *http.Request) {
 	// Generate PDF
 	pdf := gofpdf.New("P", "mm", "A4", "")
 
-	var tpl int
-	hasTemplate := false
-	if _, err := os.Stat("template.pdf"); err == nil {
-		tpl = gofpdi.ImportPage(pdf, "template.pdf", 1, "/MediaBox")
-		hasTemplate = true
+	var templateImage string
+	if _, err := os.Stat("template.png"); err == nil {
+		templateImage = "template.png"
+	} else if _, err := os.Stat("template.jpg"); err == nil {
+		templateImage = "template.jpg"
 	}
 
-	if hasTemplate {
+	if templateImage != "" {
 		pdf.SetHeaderFunc(func() {
-			gofpdi.UseImportedTemplate(pdf, tpl, 0, 0, 210, 297)
+			pdf.Image(templateImage, 0, 0, 210, 297, false, "", 0, "")
 		})
 		pdf.SetTopMargin(40)
 	}
