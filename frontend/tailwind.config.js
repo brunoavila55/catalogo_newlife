@@ -13,9 +13,9 @@ export default {
           dark: '#1D4EDB', // azul 700
         },
         surface: {
-          light: '#FFFFFF', // branco
-          DEFAULT: '#F8FAFC', // slate 50
-          dark: '#F1F5F9', // slate 100
+          light: '#F1F5F9', // slate 100
+          DEFAULT: '#FFFFFF', // white
+          dark: '#FFFFFF', // white
         }
       },
       fontFamily: {

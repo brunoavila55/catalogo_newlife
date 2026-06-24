@@ -137,6 +137,9 @@ export default function Catalog() {
 
   return (
     <div className="container mx-auto px-6 pt-24 pb-16 font-sans relative min-h-screen">
+      {/* Decorative background blobs for white theme depth */}
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-brand/[0.03] to-transparent pointer-events-none -z-10"></div>
+      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-brand/[0.02] blur-3xl pointer-events-none -z-10"></div>
       
       {/* Page Header */}
       <div className="mb-10">
@@ -286,8 +289,8 @@ export default function Catalog() {
             const isInCompare = compareList.find(c => c.id === p.id);
 
             return (
-              <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-surface border border-slate-200/60 hover:border-brand/40 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
-                <div className="aspect-[4/3] bg-surface-dark relative overflow-hidden">
+              <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-white border border-slate-200 hover:border-brand/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
+                <div className="aspect-[4/3] bg-transparent relative overflow-hidden group-hover:bg-slate-50/50 transition-colors duration-500">
                   {hasImage ? (
                     <>
                       <img src={mainImg} alt={p.name} loading="lazy" decoding="async" className="w-full h-full object-contain p-4 transition-all duration-700 group-hover:scale-105" />
@@ -306,7 +309,7 @@ export default function Catalog() {
                       if (isInCompare) removeFromCompare(p.id);
                       else addToCompare(p);
                     }}
-                    className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-slate-900 border border-brand' : 'bg-slate-200/90 text-slate-600 border border-slate-300/50 opacity-0 group-hover:opacity-100 hover:text-slate-900 hover:border-slate-500'}`}
+                    className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-white border border-brand shadow-lg shadow-brand/20' : 'bg-white/80 text-slate-400 border border-slate-200 opacity-0 group-hover:opacity-100 hover:text-brand hover:border-brand/30 hover:bg-white'}`}
                     title={isInCompare ? "Remover do comparativo" : "Adicionar ao comparativo"}
                   >
                     {isInCompare ? <CheckCircle2 size={16} /> : <PlusCircle size={16} />}
@@ -323,7 +326,7 @@ export default function Catalog() {
                         toast.error('Crie um projeto primeiro na aba Projetos!');
                       }
                     }}
-                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-slate-200/90 text-slate-600 border border-slate-300/50 opacity-0 group-hover:opacity-100 hover:text-emerald-400 hover:border-emerald-500"
+                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-white/80 text-slate-400 border border-slate-200 opacity-0 group-hover:opacity-100 hover:text-emerald-500 hover:border-emerald-300 hover:bg-white"
                     title="Adicionar ao Projeto"
                   >
                     <FolderPlus size={16} />
@@ -361,7 +364,7 @@ export default function Catalog() {
           <button 
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
-            className="p-3 rounded-xl bg-surface border border-slate-200/60 text-slate-900 disabled:opacity-30 hover:bg-slate-100 transition-all"
+            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 hover:text-brand transition-all"
           >
             <ChevronLeft size={18} />
           </button>
@@ -371,7 +374,7 @@ export default function Catalog() {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-brand text-slate-900 shadow-lg shadow-brand/20' : 'bg-surface border border-slate-200/60 text-slate-600 hover:text-slate-900 hover:border-slate-600'}`}
+                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-brand text-white shadow-lg shadow-brand/20 border-brand' : 'bg-white border border-slate-200 text-slate-500 hover:text-brand hover:border-brand/30 hover:bg-slate-50'}`}
               >
                 {i + 1}
               </button>
@@ -381,7 +384,7 @@ export default function Catalog() {
           <button 
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
-            className="p-3 rounded-xl bg-surface border border-slate-200/60 text-slate-900 disabled:opacity-30 hover:bg-slate-100 transition-all"
+            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 hover:text-brand transition-all"
           >
             <ChevronRight size={18} />
           </button>

@@ -108,9 +108,9 @@ export default function ProductDetail() {
       </Link>
 
       <div className="flex flex-col lg:flex-row gap-12">
-        {/* Image Gallery */}
-        <div className="w-full lg:w-1/2">
-          <div className="aspect-square bg-surface rounded-2xl border border-slate-200/60 relative flex items-center justify-center overflow-hidden mb-4 group">
+        {/* Images Column */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-4">
+          <div className="aspect-square bg-white border border-slate-100 rounded-3xl relative flex items-center justify-center overflow-hidden mb-4 group hover:border-slate-200 transition-colors">
             {imagesUrls.length > 0 ? (
               <>
                 <img 
@@ -122,13 +122,13 @@ export default function ProductDetail() {
                   <>
                     <button 
                       onClick={prevImage}
-                      className="absolute left-3 p-2.5 rounded-xl bg-surface-dark/80 backdrop-blur-sm text-white border border-slate-200/60 hover:bg-brand hover:border-brand transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute left-3 p-2.5 rounded-xl bg-white/80 backdrop-blur-sm text-slate-900 border border-slate-200 shadow-sm hover:bg-brand hover:text-white transition-all opacity-0 group-hover:opacity-100"
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button 
                       onClick={nextImage}
-                      className="absolute right-3 p-2.5 rounded-xl bg-surface-dark/80 backdrop-blur-sm text-white border border-slate-200/60 hover:bg-brand hover:border-brand transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute right-3 p-2.5 rounded-xl bg-white/80 backdrop-blur-sm text-slate-900 border border-slate-200 shadow-sm hover:bg-brand hover:text-white transition-all opacity-0 group-hover:opacity-100"
                     >
                       <ChevronRight size={20} />
                     </button>
@@ -137,7 +137,7 @@ export default function ProductDetail() {
 
                 {/* Image counter */}
                 {images.length > 1 && (
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-surface-dark/80 backdrop-blur-sm text-xs text-slate-600 font-medium border border-slate-200/60">
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm text-xs text-slate-600 font-medium border border-slate-100">
                     {activeImage + 1} / {imagesUrls.length}
                   </div>
                 )}
@@ -145,7 +145,7 @@ export default function ProductDetail() {
             ) : product.image_url ? (
               <img src={getImageUrl(product.image_url)} alt={product.name} className="w-full h-full object-contain p-8 transition-transform duration-500" />
             ) : (
-              <div className="flex flex-col items-center gap-2 text-slate-600">
+              <div className="flex flex-col items-center gap-2 text-slate-400">
                 <Zap size={40} />
                 <span className="text-sm">Sem imagem disponível</span>
               </div>
@@ -159,7 +159,7 @@ export default function ProductDetail() {
                 <button 
                   key={idx}
                   onClick={() => setActiveImage(idx)}
-                  className={`w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-brand shadow-lg shadow-brand/10' : 'border-slate-200 hover:border-slate-600'}`}
+                  className={`w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all bg-white ${activeImage === idx ? 'border-brand' : 'border-slate-100 hover:border-slate-300'}`}
                 >
                   <img src={img} className="w-full h-full object-contain p-1" alt="Thumbnail" />
                 </button>
@@ -178,13 +178,13 @@ export default function ProductDetail() {
           <div className="mb-6 flex flex-col gap-3">
             <div className="flex items-center gap-2">
               {product.status === 'Em estoque' ? (
-                <span className="text-sm font-medium text-emerald-400/90 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span className="text-sm font-medium text-emerald-600 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                   Em estoque {specsMap['_stock_count'] ? `(${specsMap['_stock_count']} unidades)` : ''}
                 </span>
               ) : (
-                <span className="text-sm font-medium text-red-400/90 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span className="text-sm font-medium text-red-500 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                   Em falta
                 </span>
               )}
@@ -192,7 +192,7 @@ export default function ProductDetail() {
             
             {specsMap['_price'] && (
               <div className="text-2xl font-bold text-slate-900">
-                <span className="text-sm font-medium text-slate-600 mr-1">R$</span>
+                <span className="text-sm font-medium text-slate-500 mr-1">R$</span>
                 {specsMap['_price']}
               </div>
             )}
@@ -202,7 +202,7 @@ export default function ProductDetail() {
           {product.tags && product.tags.length > 0 && (
             <div className="flex gap-2 flex-wrap mb-8">
               {product.tags.map((t: string) => (
-                <span key={t} className="px-3 py-1.5 bg-slate-100 border border-slate-300/50 text-slate-600 text-xs uppercase tracking-wider rounded-lg font-medium">
+                <span key={t} className="px-3 py-1.5 bg-slate-50 border border-slate-100 text-slate-600 text-xs uppercase tracking-wider rounded-lg font-medium">
                   {t}
                 </span>
               ))}
@@ -217,7 +217,7 @@ export default function ProductDetail() {
                 if (isInCompare) removeFromCompare(product.id);
                 else addToCompare(product);
               }}
-              className={`flex items-center gap-2 border px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all ${isInCompare ? 'bg-brand/10 border-brand text-brand' : 'bg-transparent border-slate-300 text-slate-600 hover:border-brand hover:text-brand'}`}
+              className={`flex items-center gap-2 border px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all ${isInCompare ? 'bg-brand text-white border-brand' : 'bg-white border-slate-200 text-slate-700 hover:border-brand hover:text-brand'}`}
             >
               {isInCompare ? (
                 <><CheckCircle2 size={18} /> No Comparativo</>
@@ -235,7 +235,7 @@ export default function ProductDetail() {
                   toast.error('Crie um projeto primeiro na aba Projetos!');
                 }
               }}
-              className="flex items-center gap-2 border border-slate-300 bg-transparent text-slate-600 hover:border-emerald-400 hover:text-emerald-400 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
+              className="flex items-center gap-2 border border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:text-emerald-600 px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all"
             >
               <FolderPlus size={18} /> Adicionar ao Projeto
             </button>
@@ -245,79 +245,90 @@ export default function ProductDetail() {
           {hasNetSpecs && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
               {netSpecs.wifi && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-brand/10 text-brand flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-brand/5 text-brand flex items-center justify-center">
                     <Wifi size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Wi-Fi</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.wifi}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Wi-Fi</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.wifi}</span>
                   </div>
                 </div>
               )}
               {netSpecs.freq && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center">
                     <Activity size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Freq / Largura de Banda</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.freq}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Freq / Largura de Banda</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.freq}</span>
                   </div>
                 </div>
               )}
               {netSpecs.ports && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center">
                     <Network size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Portas Disponíveis</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.ports}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Portas Disponíveis</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.ports}</span>
                   </div>
                 </div>
               )}
               {netSpecs.speed && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-500 flex items-center justify-center">
                     <Zap size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Classe / Velocidade</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.speed}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Classe / Velocidade</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.speed}</span>
                   </div>
                 </div>
               )}
               {netSpecs.power && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
                     <Plug size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Alimentação</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.power}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Alimentação</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.power}</span>
                   </div>
                 </div>
               )}
               {netSpecs.mgmt && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center">
                     <Settings size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Gerenciamento</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.mgmt}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Gerenciamento</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.mgmt}</span>
                   </div>
                 </div>
               )}
               {netSpecs.antennas && (
-                <div className="bg-surface border border-slate-200/60 rounded-xl p-4 flex flex-col gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center">
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center">
                     <Radio size={18} />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-600 uppercase tracking-wider font-bold block">Antenas</span>
-                    <span className="text-sm text-slate-200 font-semibold">{netSpecs.antennas}</span>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Antenas</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.antennas}</span>
+                  </div>
+                </div>
+              )}
+              {netSpecs.poe && (
+                <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-brand/5 text-brand flex items-center justify-center">
+                    <Zap size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">PoE</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.poe}</span>
                   </div>
                 </div>
               )}
@@ -326,21 +337,19 @@ export default function ProductDetail() {
 
           {/* Specs */}
           {hasGenericSpecs && (
-            <div className="glass rounded-2xl p-6">
+            <div className="bg-white border border-slate-100 rounded-2xl p-6">
               <h2 className="text-xl text-slate-900 font-condensed mb-5">Especificações Técnicas</h2>
               
-              <div className="space-y-0 divide-y divide-slate-800/50">
-                {genericSpecs.map(([key, value]) => (
-                  <div key={key} className="flex flex-col sm:flex-row py-3.5 gap-1">
-                    <span className="w-full sm:w-2/5 text-slate-600 text-sm font-semibold">{key}</span>
-                    <span className="w-full sm:w-3/5 text-slate-900 text-sm">{String(value)}</span>
-                  </div>
+              <table className="w-full">
+                {genericSpecs.map(([key, val]) => (
+                  <tr key={key} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors">
+                    <td className="py-4 px-2 text-slate-500 font-medium text-sm w-1/3">{key}</td>
+                    <td className="py-4 px-2 text-slate-800 text-sm">{String(val)}</td>
+                  </tr>
                 ))}
-              </div>
+              </table>
             </div>
           )}
-
-          {/* Description has been moved below */}
         </div>
       </div>
 
