@@ -44,6 +44,14 @@ export default function ProductForm() {
   const [sfpConn, setSfpConn] = useState('');
   const [sfpMode, setSfpMode] = useState('');
 
+
+  // OLT PON Module specific fields
+  const [ponTech, setPonTech] = useState('');
+  const [ponClass, setPonClass] = useState('');
+  const [ponTxPower, setPonTxPower] = useState('');
+  const [ponRxSens, setPonRxSens] = useState('');
+  const [ponWave, setPonWave] = useState('');
+
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
 
   const [tagsList, setTagsList] = useState<Tag[]>([]);
@@ -103,17 +111,37 @@ export default function ProductForm() {
             setSfpDist(p.specs_json['_sfp_dist'] || '');
             setSfpConn(p.specs_json['_sfp_conn'] || '');
             setSfpMode(p.specs_json['_sfp_mode'] || '');
+
+            setPonTech(p.specs_json['_pon_tech'] || '');
+            setPonClass(p.specs_json['_pon_class'] || '');
+            setPonTxPower(p.specs_json['_pon_txpower'] || '');
+            setPonRxSens(p.specs_json['_pon_rxsens'] || '');
+            setPonWave(p.specs_json['_pon_wave'] || '');
               
               setSfpForm(p.specs_json['_sfp_form'] || '');
               setSfpRate(p.specs_json['_sfp_rate'] || '');
               setSfpWave(p.specs_json['_sfp_wave'] || '');
               setSfpDist(p.specs_json['_sfp_dist'] || '');
               setSfpConn(p.specs_json['_sfp_conn'] || '');
+
               setSfpMode(p.specs_json['_sfp_mode'] || '');
+
+            setPonTech(p.specs_json['_pon_tech'] || '');
+            setPonClass(p.specs_json['_pon_class'] || '');
+            setPonTxPower(p.specs_json['_pon_txpower'] || '');
+            setPonRxSens(p.specs_json['_pon_rxsens'] || '');
+            setPonWave(p.specs_json['_pon_wave'] || '');
+
+              setPonTech(p.specs_json['_pon_tech'] || '');
+              setPonClass(p.specs_json['_pon_class'] || '');
+              setPonTxPower(p.specs_json['_pon_txpower'] || '');
+              setPonRxSens(p.specs_json['_pon_rxsens'] || '');
+              setPonWave(p.specs_json['_pon_wave'] || '');
+
 
 
               const specArray = Object.entries(p.specs_json)
-                .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_'))
+                .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_pon_'))
                 .map(([k, v]) => ({ key: k, value: v as string }));
               setSpecs(specArray);
             }
@@ -151,8 +179,14 @@ export default function ProductForm() {
             setSfpConn(p.specs_json['_sfp_conn'] || '');
             setSfpMode(p.specs_json['_sfp_mode'] || '');
 
+            setPonTech(p.specs_json['_pon_tech'] || '');
+            setPonClass(p.specs_json['_pon_class'] || '');
+            setPonTxPower(p.specs_json['_pon_txpower'] || '');
+            setPonRxSens(p.specs_json['_pon_rxsens'] || '');
+            setPonWave(p.specs_json['_pon_wave'] || '');
+
             const specArray = Object.entries(p.specs_json)
-              .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_'))
+              .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_pon_') && !k.startsWith('_'))
               .map(([k, v]) => ({ key: k, value: v as string }));
             setSpecs(specArray);
           }
@@ -277,6 +311,12 @@ export default function ProductForm() {
       if (sfpDist) specsMap['_sfp_dist'] = sfpDist;
       if (sfpConn) specsMap['_sfp_conn'] = sfpConn;
       if (sfpMode) specsMap['_sfp_mode'] = sfpMode;
+
+      if (ponTech) specsMap['_pon_tech'] = ponTech;
+      if (ponClass) specsMap['_pon_class'] = ponClass;
+      if (ponTxPower) specsMap['_pon_txpower'] = ponTxPower;
+      if (ponRxSens) specsMap['_pon_rxsens'] = ponRxSens;
+      if (ponWave) specsMap['_pon_wave'] = ponWave;
       if (stockCount && status === 'Em estoque') specsMap['_stock_count'] = stockCount;
       if (productType.trim()) specsMap['_type'] = productType.trim();
       if (price.trim()) specsMap['_price'] = price.trim();
@@ -611,6 +651,72 @@ export default function ProductForm() {
                   <option value="Multimodo (MMF)">Multimodo (MMF)</option>
                   <option value="Cobre (Copper)">Cobre (Copper)</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          
+
+          {/* OLT PON Module Specs */}
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+            <h3 className="text-lg font-medium text-slate-900 mb-4">Especificações de Módulos OLT (PON)</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Tecnologia PON</label>
+                <select 
+                  value={ponTech} onChange={e => setPonTech(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não aplicável</option>
+                  <option value="GPON">GPON</option>
+                  <option value="EPON">EPON</option>
+                  <option value="XG-PON">XG-PON</option>
+                  <option value="XGS-PON">XGS-PON</option>
+                  <option value="10G-EPON">10G-EPON</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Classe de Potência (Laser)</label>
+                <select 
+                  value={ponClass} onChange={e => setPonClass(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não aplicável</option>
+                  <option value="Classe B+">Classe B+</option>
+                  <option value="Classe C+">Classe C+</option>
+                  <option value="Classe C++">Classe C++</option>
+                  <option value="Classe C+++">Classe C+++</option>
+                  <option value="PR30">PR30</option>
+                  <option value="PX20+">PX20+</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Potência de TX (dBm)</label>
+                <input 
+                  type="text" placeholder="Ex: +3 a +7 dBm"
+                  value={ponTxPower} onChange={e => setPonTxPower(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Sensibilidade RX (dBm)</label>
+                <input 
+                  type="text" placeholder="Ex: -30 dBm"
+                  value={ponRxSens} onChange={e => setPonRxSens(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-600 mb-1">Comprimento de Onda (TX / RX)</label>
+                <input 
+                  type="text" placeholder="Ex: TX 1490nm / RX 1310nm"
+                  value={ponWave} onChange={e => setPonWave(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
               </div>
             </div>
           </div>
