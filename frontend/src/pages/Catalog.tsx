@@ -291,7 +291,7 @@ export default function Catalog() {
 
             return (
               <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-white border border-slate-200 hover:border-brand/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
-                <div className="aspect-[4/3] bg-transparent relative overflow-hidden group-hover:bg-slate-50/50 transition-colors duration-500">
+                <div className="aspect-[4/3] bg-transparent relative overflow-hidden transition-colors duration-500">
                   {hasImage ? (
                     <>
                       <img src={mainImg} alt={p.name} loading="lazy" decoding="async" className="w-full h-full object-contain p-4 transition-all duration-700 group-hover:scale-105" />
