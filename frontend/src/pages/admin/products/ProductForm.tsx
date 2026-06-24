@@ -647,6 +647,17 @@ export default function ProductForm() {
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Suporte a Mesh</label>
+                <select 
+                  value={netMesh} onChange={e => setNetMesh(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não</option>
+                  <option value="Sim">Sim</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Portas Disponíveis</label>
                 <input 
                   type="text" placeholder="Ex: 4x LAN Gigabit, 1x WAN"
