@@ -173,7 +173,7 @@ export default function Catalog() {
           <div>
             <span className="text-brand text-xs font-bold uppercase tracking-[0.2em] block mb-2">Explore nossa linha</span>
             <h1 className="text-4xl md:text-5xl text-slate-900 font-condensed">Catálogo de Equipamentos</h1>
-            {!loading && <p className="text-slate-600 mt-2 text-sm">{totalProducts} equipamentos no catálogo</p>}
+            {!loading && <p className="text-slate-600 mt-2 text-sm">{products.length} equipamentos no catálogo</p>}
           </div>
           
           {/* Search */}
