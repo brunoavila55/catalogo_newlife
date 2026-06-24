@@ -28,9 +28,8 @@ export default function Catalog() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalProducts, setTotalProducts] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(12);
+  const observerTarget = useRef<HTMLDivElement>(null);
   
   const [showFilters, setShowFilters] = useState(false);
   const gridRef = useRef(null);
@@ -67,16 +66,15 @@ export default function Catalog() {
       setLoading(true);
       try {
         const params = new URLSearchParams();
-        params.append('page', page.toString());
-        params.append('limit', '12');
+        params.append('page', '1');
+        params.append('limit', '1000');
         if (searchQuery) params.append('q', searchQuery);
         
         const pRes = await api.get(`/products?${params.toString()}`);
         const pData = await pRes.json();
         
         setProducts(pData.data || []);
-        setTotalPages(pData.total_pages || 1);
-        setTotalProducts(pData.total || 0);
+        
       } catch (e) {
         console.error("Erro ao buscar produtos", e);
       } finally {
@@ -84,11 +82,11 @@ export default function Catalog() {
       }
     };
     fetchProducts();
-  }, [page, searchQuery]);
+  }, [searchQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1);
+    setVisibleCount(12);
     setSearchQuery(searchInput);
   };
 
@@ -99,6 +97,10 @@ export default function Catalog() {
       setSelectedTags([...selectedTags, tagName]);
     }
   };
+
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [selectedCategory, selectedType, selectedTags]);
 
   const filteredProducts = products.filter(p => {
     if (selectedCategory !== 'Todos' && p.category !== selectedCategory) return false;
@@ -122,7 +124,7 @@ export default function Catalog() {
       });
       return () => ctx.revert();
     }
-  }, [loading, selectedCategory, selectedType, selectedTags.length, page]);
+  }, [loading, selectedCategory, selectedType, selectedTags.length, visibleCount]);
 
   const clearFilters = () => {
     setSearchInput('');
@@ -130,8 +132,30 @@ export default function Catalog() {
     setSelectedCategory('Todos');
     setSelectedType('Todos');
     setSelectedTags([]);
-    setPage(1);
+    setVisibleCount(12);
   };
+
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && visibleCount < filteredProducts.length) {
+          setVisibleCount(prev => prev + 12);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [observerTarget, visibleCount, filteredProducts.length]);
 
   const activeFiltersCount = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedType !== 'Todos' ? 1 : 0) + selectedTags.length;
 
@@ -267,7 +291,7 @@ export default function Catalog() {
               </div>
             </div>
           ))
-        ) : filteredProducts.length === 0 ? (
+        ) : filteredProducts.slice(0, visibleCount).length === 0 ? (
           <div className="col-span-full py-20 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 rounded-2xl bg-slate-100/50 flex items-center justify-center mb-4">
               <Search size={28} className="text-slate-600" />
@@ -282,7 +306,7 @@ export default function Catalog() {
             </button>
           </div>
         ) : (
-          filteredProducts.map((p) => {
+          filteredProducts.slice(0, visibleCount).map((p) => {
             const mainImg = getProductMainImage(p);
             const secondImg = getProductSecondImage(p);
             const hasImage = Boolean(mainImg);
@@ -330,36 +354,10 @@ export default function Catalog() {
         )}
       </div>
 
-      {/* Pagination */}
-      {!loading && totalPages > 1 && (
-        <div className="flex justify-center items-center mt-14 gap-2">
-          <button 
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 hover:text-brand transition-all"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          
-          <div className="flex gap-1.5">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i + 1)}
-                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-brand text-white shadow-lg shadow-brand/20 border-brand' : 'bg-white border border-slate-200 text-slate-500 hover:text-brand hover:border-brand/30 hover:bg-slate-50'}`}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-
-          <button 
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-            className="p-3 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:bg-slate-50 hover:text-brand transition-all"
-          >
-            <ChevronRight size={18} />
-          </button>
+      {/* Infinite Scroll Target */}
+      {visibleCount < filteredProducts.length && (
+        <div ref={observerTarget} className="h-20 w-full flex items-center justify-center mt-10">
+          <div className="animate-spin w-8 h-8 border-3 border-brand border-t-transparent rounded-full"></div>
         </div>
       )}
     </div>
