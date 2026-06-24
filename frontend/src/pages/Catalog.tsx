@@ -139,8 +139,13 @@ export default function Catalog() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && visibleCount < filteredProducts.length) {
-          setVisibleCount(prev => prev + 12);
+        if (entries[0].isIntersecting) {
+          setVisibleCount(prev => {
+            if (prev < filteredProducts.length) {
+              return prev + 12;
+            }
+            return prev;
+          });
         }
       },
       { threshold: 0.1 }
@@ -150,12 +155,8 @@ export default function Catalog() {
       observer.observe(observerTarget.current);
     }
 
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
-  }, [observerTarget, visibleCount, filteredProducts.length]);
+    return () => observer.disconnect();
+  }, [filteredProducts.length]);
 
   const activeFiltersCount = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedType !== 'Todos' ? 1 : 0) + selectedTags.length;
 
