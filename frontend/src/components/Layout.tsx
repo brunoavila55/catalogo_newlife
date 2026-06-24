@@ -21,7 +21,7 @@ export default function Layout() {
       <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${headerBg}`}>
           <div className="container mx-auto px-6 py-4 flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src="/logo.svg" alt="NL Logo" className="w-8 h-8 group-hover:scale-110 transition-transform" />
+              <img src="/logo.png" alt="NL Logo" className="w-8 h-8 group-hover:scale-110 transition-transform object-contain" />
               <span className="text-xl font-condensed font-bold tracking-wider">
                 <span className="text-brand">New Life</span>{' '}
                 <span className="text-slate-800">Fibra</span>
