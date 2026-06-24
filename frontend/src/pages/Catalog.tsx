@@ -303,35 +303,6 @@ export default function Catalog() {
                     <div className="w-full h-full flex items-center justify-center"><Zap size={32} className="text-slate-700" /></div>
                   )}
                   
-                  {/* Compare button */}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (isInCompare) removeFromCompare(p.id);
-                      else addToCompare(p);
-                    }}
-                    className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-white border border-brand shadow-lg shadow-brand/20' : 'bg-white/80 text-slate-400 border border-slate-200 opacity-0 group-hover:opacity-100 hover:text-brand hover:border-brand/30 hover:bg-white'}`}
-                    title={isInCompare ? "Remover do comparativo" : "Adicionar ao comparativo"}
-                  >
-                    {isInCompare ? <CheckCircle2 size={16} /> : <PlusCircle size={16} />}
-                  </button>
-
-                  {/* Add to project button */}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      try {
-                        addItem(p, 1);
-                        toast.success('Adicionado ao projeto!');
-                      } catch (err) {
-                        toast.error('Crie um projeto primeiro na aba Projetos!');
-                      }
-                    }}
-                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-white/80 text-slate-400 border border-slate-200 opacity-0 group-hover:opacity-100 hover:text-emerald-500 hover:border-emerald-300 hover:bg-white"
-                    title="Adicionar ao Projeto"
-                  >
-                    <FolderPlus size={16} />
-                  </button>
 
                   <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
