@@ -35,6 +35,15 @@ export default function ProductForm() {
   const [netMgmt, setNetMgmt] = useState('');
   const [netAntennas, setNetAntennas] = useState('');
 
+
+  // Transceiver SFP specific fields
+  const [sfpForm, setSfpForm] = useState('');
+  const [sfpRate, setSfpRate] = useState('');
+  const [sfpWave, setSfpWave] = useState('');
+  const [sfpDist, setSfpDist] = useState('');
+  const [sfpConn, setSfpConn] = useState('');
+  const [sfpMode, setSfpMode] = useState('');
+
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
 
   const [tagsList, setTagsList] = useState<Tag[]>([]);
@@ -85,10 +94,26 @@ export default function ProductForm() {
               setNetSpeed(p.specs_json['_net_speed'] || '');
               setNetPower(p.specs_json['_net_power'] || '');
               setNetMgmt(p.specs_json['_net_mgmt'] || '');
+
               setNetAntennas(p.specs_json['_net_antennas'] || '');
 
+            setSfpForm(p.specs_json['_sfp_form'] || '');
+            setSfpRate(p.specs_json['_sfp_rate'] || '');
+            setSfpWave(p.specs_json['_sfp_wave'] || '');
+            setSfpDist(p.specs_json['_sfp_dist'] || '');
+            setSfpConn(p.specs_json['_sfp_conn'] || '');
+            setSfpMode(p.specs_json['_sfp_mode'] || '');
+              
+              setSfpForm(p.specs_json['_sfp_form'] || '');
+              setSfpRate(p.specs_json['_sfp_rate'] || '');
+              setSfpWave(p.specs_json['_sfp_wave'] || '');
+              setSfpDist(p.specs_json['_sfp_dist'] || '');
+              setSfpConn(p.specs_json['_sfp_conn'] || '');
+              setSfpMode(p.specs_json['_sfp_mode'] || '');
+
+
               const specArray = Object.entries(p.specs_json)
-                .filter(([k]) => !k.startsWith('_net_'))
+                .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_'))
                 .map(([k, v]) => ({ key: k, value: v as string }));
               setSpecs(specArray);
             }
@@ -119,8 +144,15 @@ export default function ProductForm() {
             setNetMgmt(p.specs_json['_net_mgmt'] || '');
             setNetAntennas(p.specs_json['_net_antennas'] || '');
 
+            setSfpForm(p.specs_json['_sfp_form'] || '');
+            setSfpRate(p.specs_json['_sfp_rate'] || '');
+            setSfpWave(p.specs_json['_sfp_wave'] || '');
+            setSfpDist(p.specs_json['_sfp_dist'] || '');
+            setSfpConn(p.specs_json['_sfp_conn'] || '');
+            setSfpMode(p.specs_json['_sfp_mode'] || '');
+
             const specArray = Object.entries(p.specs_json)
-              .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_'))
+              .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_'))
               .map(([k, v]) => ({ key: k, value: v as string }));
             setSpecs(specArray);
           }
@@ -238,6 +270,13 @@ export default function ProductForm() {
       if (netPower) specsMap['_net_power'] = netPower;
       if (netMgmt) specsMap['_net_mgmt'] = netMgmt;
       if (netAntennas) specsMap['_net_antennas'] = netAntennas;
+      
+      if (sfpForm) specsMap['_sfp_form'] = sfpForm;
+      if (sfpRate) specsMap['_sfp_rate'] = sfpRate;
+      if (sfpWave) specsMap['_sfp_wave'] = sfpWave;
+      if (sfpDist) specsMap['_sfp_dist'] = sfpDist;
+      if (sfpConn) specsMap['_sfp_conn'] = sfpConn;
+      if (sfpMode) specsMap['_sfp_mode'] = sfpMode;
       if (stockCount && status === 'Em estoque') specsMap['_stock_count'] = stockCount;
       if (productType.trim()) specsMap['_type'] = productType.trim();
       if (price.trim()) specsMap['_price'] = price.trim();
@@ -498,6 +537,84 @@ export default function ProductForm() {
             </div>
           </div>
 
+
+          {/* SFP Transceiver Specs */}
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+            <h3 className="text-lg font-medium text-slate-900 mb-4">Especificações de Transceiver / SFP</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Form Factor</label>
+                <select 
+                  value={sfpForm} onChange={e => setSfpForm(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não aplicável</option>
+                  <option value="SFP">SFP</option>
+                  <option value="SFP+">SFP+</option>
+                  <option value="XFP">XFP</option>
+                  <option value="QSFP+">QSFP+</option>
+                  <option value="QSFP28">QSFP28</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Taxa de Dados (Data Rate)</label>
+                <input 
+                  type="text" placeholder="Ex: 1.25G, 10G, 40G, 100G"
+                  value={sfpRate} onChange={e => setSfpRate(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Comprimento de Onda (Wavelength)</label>
+                <input 
+                  type="text" placeholder="Ex: 850nm, 1310nm, 1550nm, TX1310/RX1550"
+                  value={sfpWave} onChange={e => setSfpWave(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Distância Máxima</label>
+                <input 
+                  type="text" placeholder="Ex: 300m, 3km, 10km, 20km, 80km"
+                  value={sfpDist} onChange={e => setSfpDist(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Conector</label>
+                <select 
+                  value={sfpConn} onChange={e => setSfpConn(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não aplicável</option>
+                  <option value="LC Duplex">LC Duplex</option>
+                  <option value="LC Simplex (BIDI)">LC Simplex (BIDI)</option>
+                  <option value="SC">SC</option>
+                  <option value="RJ45">RJ45</option>
+                  <option value="MPO">MPO</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Modo de Fibra</label>
+                <select 
+                  value={sfpMode} onChange={e => setSfpMode(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                >
+                  <option value="">Não aplicável</option>
+                  <option value="Monomodo (SMF)">Monomodo (SMF)</option>
+                  <option value="Multimodo (MMF)">Multimodo (MMF)</option>
+                  <option value="Cobre (Copper)">Cobre (Copper)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
           {/* Dynamic Specs */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
