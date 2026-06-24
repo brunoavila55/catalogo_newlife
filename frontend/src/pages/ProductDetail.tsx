@@ -91,7 +91,36 @@ export default function ProductDetail() {
   };
   const hasNetSpecs = Object.values(netSpecs).some(v => v);
   
-  const genericSpecs = Object.entries(specsMap).filter(([k]) => !k.startsWith('_'));
+  const techSpecs = Object.entries(specsMap).filter(([k]) => !k.startsWith('_'));
+
+  const specialFields: Record<string, string> = {
+    '_sfp_form': 'Form Factor',
+    '_sfp_rate': 'Taxa de Dados',
+    '_sfp_wave': 'Comprimento de Onda',
+    '_sfp_dist': 'Distância Máxima',
+    '_sfp_conn': 'Conector',
+    '_sfp_mode': 'Modo de Fibra',
+    
+    '_pon_tech': 'Tecnologia PON',
+    '_pon_class': 'Classe de Potência',
+    '_pon_txpower': 'Potência de TX',
+    '_pon_rxsens': 'Sensibilidade RX',
+    '_pon_wave': 'Comprimento de Onda (PON)',
+
+    '_ftth_type': 'Tipo de Componente',
+    '_ftth_split': 'Razão de Divisão',
+    '_ftth_conn': 'Tipo de Conector',
+    '_ftth_fiber': 'Tipo de Fibra',
+    '_ftth_loss': 'Atenuação (IL)'
+  };
+
+  Object.keys(specialFields).forEach(key => {
+    if (specsMap[key]) {
+      techSpecs.push([specialFields[key], specsMap[key]]);
+    }
+  });
+
+  const genericSpecs = techSpecs;
   const hasGenericSpecs = genericSpecs.length > 0;
   const isInCompare = compareList.find(c => c.id === product.id);
 
