@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Download, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus, X } from 'lucide-react';
-import { api, BASE_URL } from '../services/api';
+import { ArrowLeft, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus, X } from 'lucide-react';
+import { api } from '../services/api';
 import { useCompare } from '../context/CompareContext';
 import { useProject } from '../context/ProjectContext';
 import { useToast } from '../context/ToastContext';

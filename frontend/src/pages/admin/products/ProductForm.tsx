@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { api } from '../../../services/api';
 import { useToast } from '../../../context/ToastContext';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ArrowLeft, Save, UploadCloud, X, Plus, GripVertical, ChevronLeft, ChevronRight, Trash2, FileText } from 'lucide-react';
+import { ArrowLeft, Save, UploadCloud, X, Plus, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { getThumbUrl } from '../../../utils/image';
 
 interface Category { id: number; name: string; }
@@ -263,7 +263,6 @@ export default function ProductForm() {
       const formData = new FormData();
       formData.append('image', file);
       
-      const loadToast = toast;
       try {
         const res = await api.post('/upload', formData);
         if (!res.ok) throw new Error();
