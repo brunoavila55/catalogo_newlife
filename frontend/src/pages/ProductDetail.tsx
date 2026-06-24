@@ -212,6 +212,17 @@ export default function ProductDetail() {
           {/* Actions */}
           <div className="flex gap-3 mb-12 flex-wrap">
 
+            {product.purchase_url && (
+              <a 
+                href={product.purchase_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-all bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 hover:border-emerald-600 shadow-lg shadow-emerald-500/20"
+              >
+                <ExternalLink size={18} /> Comprar
+              </a>
+            )}
+
             <button 
               onClick={() => {
                 if (isInCompare) removeFromCompare(product.id);

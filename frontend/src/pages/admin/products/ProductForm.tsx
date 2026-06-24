@@ -20,6 +20,7 @@ export default function ProductForm() {
   const [stockCount, setStockCount] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [purchaseUrl, setPurchaseUrl] = useState('');
   
   const [specs, setSpecs] = useState<{key: string, value: string}[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -72,6 +73,7 @@ export default function ProductForm() {
             setDescription(p.specs || ''); // Old specs text field
             setSelectedTags(p.tags || []);
             setImages(p.images_json || (p.image_url ? [p.image_url] : []));
+            setPurchaseUrl(p.purchase_url || '');
             
             if (p.specs_json) {
               setProductType(p.specs_json['_type'] || '');
@@ -103,6 +105,7 @@ export default function ProductForm() {
           setDescription(p.specs || ''); // Old specs text field
           setSelectedTags(p.tags || []);
           setImages(p.images_json || (p.image_url ? [p.image_url] : []));
+          setPurchaseUrl(p.purchase_url || '');
           
           if (p.specs_json) {
             setProductType(p.specs_json['_type'] || '');
@@ -248,7 +251,8 @@ export default function ProductForm() {
         tags: selectedTags,
         images_json: images,
         image_url: images.length > 0 ? images[0] : '', // Cover fallback
-        specs_json: specsMap
+        specs_json: specsMap,
+        purchase_url: purchaseUrl.trim()
       };
 
       const res = isEditing 
@@ -291,6 +295,18 @@ export default function ProductForm() {
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-4">
             <h3 className="text-lg font-medium text-slate-900 mb-2">Informações Básicas</h3>
             
+            <div className="grid grid-cols-1 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Link de Compra (URL)</label>
+                <input 
+                  type="url" 
+                  value={purchaseUrl} onChange={e => setPurchaseUrl(e.target.value)}
+                  placeholder="https://www.mercadolivre.com.br/..."
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Nome do Produto *</label>

@@ -15,6 +15,7 @@ interface Product {
   status: string;
   image_url: string;
   images_json?: string[];
+  purchase_url?: string;
 }
 
 interface PaginationData {

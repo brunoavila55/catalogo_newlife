@@ -118,6 +118,7 @@ func initDB() {
 		status TEXT,
 		image_url TEXT,
 		tags TEXT, -- JSON array of tags e.g. ["Wifi-6", "Datacenter"]
+		purchase_url TEXT DEFAULT '',
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 
@@ -140,7 +141,10 @@ func initDB() {
 	
 	// Add JSON columns for P1 features
 	_, _ = db.Exec("ALTER TABLE products ADD COLUMN images_json TEXT DEFAULT '[]';")
-	_, _ = db.Exec("ALTER TABLE products ADD COLUMN specs_json TEXT DEFAULT '{}';"	)
+	_, _ = db.Exec("ALTER TABLE products ADD COLUMN specs_json TEXT DEFAULT '{}';")
+	
+	// Add purchase_url column
+	_, _ = db.Exec("ALTER TABLE products ADD COLUMN purchase_url TEXT DEFAULT '';")
 
 	// Migrate old /uploads/ URLs to /api/v1/uploads/
 	res, _ := db.Exec(`UPDATE products SET image_url = REPLACE(image_url, '/uploads/', '/api/v1/uploads/') WHERE image_url LIKE '/uploads/%'`)

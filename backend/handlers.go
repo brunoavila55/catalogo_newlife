@@ -35,6 +35,7 @@ type Product struct {
 	Tags     []string          `json:"tags"`
 	Images   []string          `json:"images_json"`
 	SpecsMap map[string]string `json:"specs_json"`
+	PurchaseURL string          `json:"purchase_url"`
 }
 
 type PaginatedResponse struct {
@@ -98,7 +99,7 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := "SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json FROM products " + whereClause + " LIMIT ? OFFSET ?"
+	query := "SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url FROM products " + whereClause + " LIMIT ? OFFSET ?"
 	args = append(args, limit, offset)
 
 	rows, err := db.Query(query, args...)
@@ -111,13 +112,14 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 	var products []Product
 	for rows.Next() {
 		var p Product
-		var specs, tagsJSON, imagesJSON, specsJSON sql.NullString
-		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON); err != nil {
+		var specs, tagsJSON, imagesJSON, specsJSON, purchaseURL sql.NullString
+		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL); err != nil {
 			log.Printf("Row scan error: %v", err)
 			continue
 		}
 		
 		p.Specs = specs.String
+		p.PurchaseURL = purchaseURL.String
 		
 		json.Unmarshal([]byte(tagsJSON.String), &p.Tags)
 		if p.Tags == nil {
@@ -195,14 +197,14 @@ func createProductHandler(w http.ResponseWriter, r *http.Request) {
 	if p.SpecsMap == nil { p.SpecsMap = make(map[string]string) }
 	specsJSON, _ := json.Marshal(p.SpecsMap)
 
-	stmt, err := db.Prepare("INSERT INTO products (slug, name, category, brand, specs, status, image_url, tags, images_json, specs_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := db.Prepare("INSERT INTO products (slug, name, category, brand, specs, status, image_url, tags, images_json, specs_json, purchase_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer stmt.Close()
 
-	res, err := stmt.Exec(p.Slug, p.Name, p.Category, p.Brand, p.Specs, p.Status, p.ImageURL, string(tagsJSON), string(imagesJSON), string(specsJSON))
+	res, err := stmt.Exec(p.Slug, p.Name, p.Category, p.Brand, p.Specs, p.Status, p.ImageURL, string(tagsJSON), string(imagesJSON), string(specsJSON), p.PurchaseURL)
 	if err != nil {
 		log.Printf("DB Exec Error: %v\n", err)
 		http.Error(w, "Erro ao salvar no banco", http.StatusInternalServerError)
@@ -262,14 +264,14 @@ func updateProductHandler(w http.ResponseWriter, r *http.Request) {
 	if p.SpecsMap == nil { p.SpecsMap = make(map[string]string) }
 	specsJSON, _ := json.Marshal(p.SpecsMap)
 
-	stmt, err := db.Prepare("UPDATE products SET slug=?, name=?, category=?, brand=?, specs=?, status=?, image_url=?, tags=?, images_json=?, specs_json=? WHERE id=? AND deleted_at IS NULL")
+	stmt, err := db.Prepare("UPDATE products SET slug=?, name=?, category=?, brand=?, specs=?, status=?, image_url=?, tags=?, images_json=?, specs_json=?, purchase_url=? WHERE id=? AND deleted_at IS NULL")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer stmt.Close()
 
-	res, err := stmt.Exec(p.Slug, p.Name, p.Category, p.Brand, p.Specs, p.Status, p.ImageURL, string(tagsJSON), string(imagesJSON), string(specsJSON), id)
+	res, err := stmt.Exec(p.Slug, p.Name, p.Category, p.Brand, p.Specs, p.Status, p.ImageURL, string(tagsJSON), string(imagesJSON), string(specsJSON), p.PurchaseURL, id)
 	if err != nil {
 		http.Error(w, "Erro ao atualizar banco", http.StatusInternalServerError)
 		return
@@ -499,9 +501,9 @@ func getTagsHandler(w http.ResponseWriter, r *http.Request) {
 func getProductBySlugHandler(w http.ResponseWriter, r *http.Request) {
 	slugParam := chi.URLParam(r, "slug")
 	var p Product
-	var specs, tagsJSON, imagesJSON, specsJSON sql.NullString
-	err := db.QueryRow("SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json FROM products WHERE slug = ? AND deleted_at IS NULL", slugParam).
-		Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON)
+	var specs, tagsJSON, imagesJSON, specsJSON, purchaseURL sql.NullString
+	err := db.QueryRow("SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url FROM products WHERE slug = ? AND deleted_at IS NULL", slugParam).
+		Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Produto não encontrado", http.StatusNotFound)
@@ -512,6 +514,7 @@ func getProductBySlugHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	p.Specs = specs.String
+	p.PurchaseURL = purchaseURL.String
 
 	json.Unmarshal([]byte(tagsJSON.String), &p.Tags)
 	if p.Tags == nil { p.Tags = []string{} }
