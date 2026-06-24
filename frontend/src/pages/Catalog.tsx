@@ -136,14 +136,15 @@ export default function Catalog() {
   const activeFiltersCount = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedType !== 'Todos' ? 1 : 0) + selectedTags.length;
 
   return (
-    <div className="container mx-auto px-6 pt-24 pb-16 font-sans relative min-h-screen">
+    <div className="relative min-h-screen font-sans overflow-x-hidden">
       {/* Decorative background blobs for white theme depth */}
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-brand/[0.03] to-transparent pointer-events-none -z-10"></div>
       <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-brand/[0.02] blur-3xl pointer-events-none -z-10"></div>
       
-      {/* Page Header */}
-      <div className="mb-10">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      <div className="container mx-auto px-6 pt-24 pb-16">
+        {/* Page Header */}
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
             <span className="text-brand text-xs font-bold uppercase tracking-[0.2em] block mb-2">Explore nossa linha</span>
             <h1 className="text-4xl md:text-5xl text-slate-900 font-condensed">Catálogo de Equipamentos</h1>
@@ -390,6 +391,7 @@ export default function Catalog() {
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 }
