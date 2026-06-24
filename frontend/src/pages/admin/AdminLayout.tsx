@@ -49,10 +49,10 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-slate-950 flex text-slate-200 font-sans">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-200 border-r border-slate-200 flex flex-col hidden md:flex">
-        <div className="p-6 border-b border-slate-200">
+      <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
+        <div className="p-6 border-b border-slate-800">
           <h1 className="text-xl font-bold text-brand uppercase tracking-wider font-condensed">
-            New Life <span className="text-slate-900">Admin</span>
+            New Life <span className="text-white">Admin</span>
           </h1>
         </div>
         
@@ -64,8 +64,8 @@ export default function AdminLayout() {
               className={({ isActive }) => 
                 `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                   isActive 
-                    ? "bg-brand text-slate-900" 
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                    ? "bg-brand text-white" 
+                    : "text-slate-400 hover:text-white hover:bg-slate-800"
                 }`
               }
             >
@@ -75,10 +75,10 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-200 space-y-2">
+        <div className="p-4 border-t border-slate-800 space-y-2">
           <Link 
             to="/catalogo"
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors font-semibold"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-semibold"
           >
             <ExternalLink size={18} />
             Ver Catálogo
@@ -95,9 +95,9 @@ export default function AdminLayout() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-slate-200/50 border-b border-slate-200 flex items-center justify-end px-8">
-          <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand">
+        <header className="h-16 bg-slate-900/50 border-b border-slate-800 flex items-center justify-end px-8">
+          <div className="flex items-center gap-3 text-sm font-medium text-slate-400">
+            <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-brand">
               <UserIcon />
             </div>
             Admin System
