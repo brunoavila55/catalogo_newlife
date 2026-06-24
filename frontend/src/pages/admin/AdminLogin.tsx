@@ -55,8 +55,8 @@ export default function AdminLogin() {
           <div className="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-4">
             <Lock size={22} className="text-brand" />
           </div>
-          <h1 className="text-2xl text-white font-condensed">Acesso Restrito</h1>
-          <p className="text-slate-500 text-sm mt-1">Painel administrativo New Life</p>
+          <h1 className="text-2xl text-slate-900 font-condensed">Acesso Restrito</h1>
+          <p className="text-slate-600 text-sm mt-1">Painel administrativo New Life</p>
         </div>
         
         {error && (
@@ -67,7 +67,7 @@ export default function AdminLogin() {
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm text-slate-400 mb-2 font-medium">Usuário</label>
+            <label className="block text-sm text-slate-600 mb-2 font-medium">Usuário</label>
             <div className="relative">
               <User size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
               <input 
@@ -75,13 +75,13 @@ export default function AdminLogin() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-surface-dark border border-slate-800 text-white pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all" 
+                className="w-full bg-surface-dark border border-slate-200 text-slate-900 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all" 
                 placeholder="admin"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm text-slate-400 mb-2 font-medium">Senha</label>
+            <label className="block text-sm text-slate-600 mb-2 font-medium">Senha</label>
             <div className="relative">
               <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
               <input 
@@ -89,7 +89,7 @@ export default function AdminLogin() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-surface-dark border border-slate-800 text-white pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all" 
+                className="w-full bg-surface-dark border border-slate-200 text-slate-900 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all" 
                 placeholder="••••••••"
               />
             </div>

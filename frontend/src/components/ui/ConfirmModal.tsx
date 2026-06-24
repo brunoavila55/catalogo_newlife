@@ -47,11 +47,11 @@ export default function ConfirmModal({
         />
         
         {/* Modal Content */}
-        <div className="relative bg-slate-900 border border-slate-800 shadow-2xl rounded-xl w-full max-w-md p-6 animate-in fade-in zoom-in-95 duration-200">
+        <div className="relative bg-slate-200 border border-slate-200 shadow-2xl rounded-xl w-full max-w-md p-6 animate-in fade-in zoom-in-95 duration-200">
           <button 
             onClick={onCancel}
             disabled={isLoading}
-            className="absolute top-4 right-4 text-slate-400 hover:text-white disabled:opacity-50"
+            className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 disabled:opacity-50"
           >
             <X size={20} />
           </button>
@@ -62,7 +62,7 @@ export default function ConfirmModal({
             </div>
             <div>
               <h3 className="text-lg font-bold text-slate-100">{title}</h3>
-              <p className="text-slate-400 mt-2 text-sm">{message}</p>
+              <p className="text-slate-600 mt-2 text-sm">{message}</p>
             </div>
           </div>
 
@@ -71,14 +71,14 @@ export default function ConfirmModal({
               ref={cancelBtnRef}
               onClick={onCancel}
               disabled={isLoading}
-              className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
             >
               {cancelText}
             </button>
             <button
               onClick={onConfirm}
               disabled={isLoading}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-slate-900 bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
             >
               {isLoading && (
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />

@@ -53,7 +53,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           >
             {toast.type === 'success' ? <CheckCircle size={18} /> : <XCircle size={18} />}
             <span className="flex-grow">{toast.message}</span>
-            <button onClick={() => removeToast(toast.id)} className="text-slate-400 hover:text-white">
+            <button onClick={() => removeToast(toast.id)} className="text-slate-600 hover:text-slate-900">
               <X size={16} />
             </button>
           </div>

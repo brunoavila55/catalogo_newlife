@@ -13,9 +13,9 @@ export default {
           dark: '#1D4EDB', // azul 700
         },
         surface: {
-          light: '#334155', // neutro 700
-          DEFAULT: '#1E293B', // neutro 800
-          dark: '#0F172A', // neutro 900
+          light: '#FFFFFF', // branco
+          DEFAULT: '#F8FAFC', // slate 50
+          dark: '#F1F5F9', // slate 100
         }
       },
       fontFamily: {

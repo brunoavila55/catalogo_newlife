@@ -143,19 +143,19 @@ export default function Catalog() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
             <span className="text-brand text-xs font-bold uppercase tracking-[0.2em] block mb-2">Explore nossa linha</span>
-            <h1 className="text-4xl md:text-5xl text-white font-condensed">Catálogo de Equipamentos</h1>
-            {!loading && <p className="text-slate-500 mt-2 text-sm">{totalProducts} equipamentos no catálogo</p>}
+            <h1 className="text-4xl md:text-5xl text-slate-900 font-condensed">Catálogo de Equipamentos</h1>
+            {!loading && <p className="text-slate-600 mt-2 text-sm">{totalProducts} equipamentos no catálogo</p>}
           </div>
           
           {/* Search */}
           <form onSubmit={handleSearch} className="relative w-full md:w-80">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" />
             <input 
               type="text" 
               placeholder="Buscar por nome ou modelo..." 
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full bg-surface border border-slate-800/60 text-white pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all placeholder:text-slate-600"
+              className="w-full bg-surface border border-slate-200/60 text-slate-900 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/20 transition-all placeholder:text-slate-600"
             />
           </form>
         </div>
@@ -165,7 +165,7 @@ export default function Catalog() {
       <div className="mb-6">
         <button 
           onClick={() => setShowFilters(!showFilters)}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border ${showFilters ? 'bg-brand/10 border-brand/30 text-brand' : 'bg-surface border-slate-800/60 text-slate-400 hover:text-white hover:border-slate-700'}`}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border ${showFilters ? 'bg-brand/10 border-brand/30 text-brand' : 'bg-surface border-slate-200/60 text-slate-600 hover:text-slate-900 hover:border-slate-300'}`}
         >
           <SlidersHorizontal size={16} />
           Filtros
@@ -180,11 +180,11 @@ export default function Catalog() {
         <div className="glass rounded-2xl p-6 space-y-5">
           {/* Categories */}
           <div>
-            <span className="text-xs uppercase tracking-[0.15em] text-slate-500 font-bold block mb-3">Categorias</span>
+            <span className="text-xs uppercase tracking-[0.15em] text-slate-600 font-bold block mb-3">Categorias</span>
             <div className="flex gap-2 overflow-x-auto pb-1">
               <button 
                 onClick={() => setSelectedCategory('Todos')}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === 'Todos' ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === 'Todos' ? 'bg-brand text-slate-900 border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-200 text-slate-600 hover:border-slate-600 hover:text-slate-900'}`}
               >
                 Todos
               </button>
@@ -192,7 +192,7 @@ export default function Catalog() {
                 <button 
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.name)}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === cat.name ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedCategory === cat.name ? 'bg-brand text-slate-900 border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-200 text-slate-600 hover:border-slate-600 hover:text-slate-900'}`}
                 >
                   {cat.name}
                 </button>
@@ -203,11 +203,11 @@ export default function Catalog() {
           {/* Types */}
           {productTypes.length > 0 && (
             <div>
-              <span className="text-xs uppercase tracking-[0.15em] text-slate-500 font-bold block mb-3">Tipo de Equipamento</span>
+              <span className="text-xs uppercase tracking-[0.15em] text-slate-600 font-bold block mb-3">Tipo de Equipamento</span>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 <button 
                   onClick={() => setSelectedType('Todos')}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedType === 'Todos' ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedType === 'Todos' ? 'bg-brand text-slate-900 border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-200 text-slate-600 hover:border-slate-600 hover:text-slate-900'}`}
                 >
                   Todos
                 </button>
@@ -215,7 +215,7 @@ export default function Catalog() {
                   <button 
                     key={tName}
                     onClick={() => setSelectedType(tName)}
-                    className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedType === tName ? 'bg-brand text-white border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-800 text-slate-400 hover:border-slate-600 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all whitespace-nowrap ${selectedType === tName ? 'bg-brand text-slate-900 border-brand shadow-lg shadow-brand/20' : 'bg-surface-dark border-slate-200 text-slate-600 hover:border-slate-600 hover:text-slate-900'}`}
                   >
                     {tName}
                   </button>
@@ -227,13 +227,13 @@ export default function Catalog() {
           {/* Tags */}
           {tags.length > 0 && (
             <div>
-              <span className="text-xs uppercase tracking-[0.15em] text-slate-500 font-bold block mb-3">Tags</span>
+              <span className="text-xs uppercase tracking-[0.15em] text-slate-600 font-bold block mb-3">Tags</span>
               <div className="flex gap-2 flex-wrap">
                 {tags.map(t => (
                   <button
                     key={t.id}
                     onClick={() => toggleTagFilter(t.name)}
-                    className={`px-3 py-1.5 text-xs font-semibold border rounded-full transition-all ${selectedTags.includes(t.name) ? 'bg-white text-surface-dark border-white' : 'bg-transparent text-slate-500 border-slate-700 hover:border-slate-500 hover:text-white'}`}
+                    className={`px-3 py-1.5 text-xs font-semibold border rounded-full transition-all ${selectedTags.includes(t.name) ? 'bg-white text-surface-dark border-white' : 'bg-transparent text-slate-600 border-slate-300 hover:border-slate-500 hover:text-slate-900'}`}
                   >
                     {t.name}
                   </button>
@@ -254,7 +254,7 @@ export default function Catalog() {
       <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 min-h-[400px]">
         {loading ? (
           Array(8).fill(0).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden bg-surface border border-slate-800/60">
+            <div key={i} className="rounded-2xl overflow-hidden bg-surface border border-slate-200/60">
               <div className="aspect-[4/3] animate-shimmer"></div>
               <div className="p-5 space-y-3">
                 <div className="h-3 w-16 animate-shimmer rounded"></div>
@@ -265,14 +265,14 @@ export default function Catalog() {
           ))
         ) : filteredProducts.length === 0 ? (
           <div className="col-span-full py-20 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800/50 flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-slate-100/50 flex items-center justify-center mb-4">
               <Search size={28} className="text-slate-600" />
             </div>
-            <p className="text-slate-400 mb-2 text-lg font-medium">Nenhum equipamento encontrado</p>
+            <p className="text-slate-600 mb-2 text-lg font-medium">Nenhum equipamento encontrado</p>
             <p className="text-slate-600 text-sm mb-6">Tente ajustar seus filtros ou buscar por outro termo.</p>
             <button 
               onClick={clearFilters}
-              className="flex items-center gap-2 bg-surface border border-slate-700 hover:border-brand text-slate-300 hover:text-white px-5 py-2.5 rounded-xl transition-all text-sm font-semibold"
+              className="flex items-center gap-2 bg-surface border border-slate-300 hover:border-brand text-slate-600 hover:text-slate-900 px-5 py-2.5 rounded-xl transition-all text-sm font-semibold"
             >
               <Trash2 size={14} /> Limpar filtros
             </button>
@@ -286,7 +286,7 @@ export default function Catalog() {
             const isInCompare = compareList.find(c => c.id === p.id);
 
             return (
-              <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-surface border border-slate-800/60 hover:border-brand/40 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
+              <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-surface border border-slate-200/60 hover:border-brand/40 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
                 <div className="aspect-[4/3] bg-surface-dark relative overflow-hidden">
                   {hasImage ? (
                     <>
@@ -306,7 +306,7 @@ export default function Catalog() {
                       if (isInCompare) removeFromCompare(p.id);
                       else addToCompare(p);
                     }}
-                    className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-white border border-brand' : 'bg-slate-900/70 text-slate-400 border border-slate-700/50 opacity-0 group-hover:opacity-100 hover:text-white hover:border-slate-500'}`}
+                    className={`absolute top-3 right-3 p-2 rounded-lg transition-all backdrop-blur-sm ${isInCompare ? 'bg-brand text-slate-900 border border-brand' : 'bg-slate-200/90 text-slate-600 border border-slate-300/50 opacity-0 group-hover:opacity-100 hover:text-slate-900 hover:border-slate-500'}`}
                     title={isInCompare ? "Remover do comparativo" : "Adicionar ao comparativo"}
                   >
                     {isInCompare ? <CheckCircle2 size={16} /> : <PlusCircle size={16} />}
@@ -323,7 +323,7 @@ export default function Catalog() {
                         toast.error('Crie um projeto primeiro na aba Projetos!');
                       }
                     }}
-                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-slate-900/70 text-slate-400 border border-slate-700/50 opacity-0 group-hover:opacity-100 hover:text-emerald-400 hover:border-emerald-500"
+                    className="absolute top-14 right-3 p-2 rounded-lg transition-all backdrop-blur-sm bg-slate-200/90 text-slate-600 border border-slate-300/50 opacity-0 group-hover:opacity-100 hover:text-emerald-400 hover:border-emerald-500"
                     title="Adicionar ao Projeto"
                   >
                     <FolderPlus size={16} />
@@ -334,13 +334,13 @@ export default function Catalog() {
 
                 <div className="p-5">
                   <span className="text-[11px] text-brand font-bold uppercase tracking-[0.15em] block mb-1.5">{p.category}</span>
-                  <h3 className="text-base text-white font-condensed group-hover:text-brand transition-colors duration-300">{p.name}</h3>
-                  <span className="text-sm text-slate-500">{p.brand}</span>
+                  <h3 className="text-base text-slate-900 font-condensed group-hover:text-brand transition-colors duration-300">{p.name}</h3>
+                  <span className="text-sm text-slate-600">{p.brand}</span>
                   
                   {p.tags && p.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {p.tags.slice(0, 3).map((t: string) => (
-                        <span key={t} className="px-2 py-0.5 bg-slate-800/60 text-[10px] uppercase tracking-wider text-slate-400 rounded-md border border-slate-700/50">
+                        <span key={t} className="px-2 py-0.5 bg-slate-100 text-[10px] uppercase tracking-wider text-slate-600 rounded-md border border-slate-300/50">
                           {t}
                         </span>
                       ))}
@@ -361,7 +361,7 @@ export default function Catalog() {
           <button 
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
-            className="p-3 rounded-xl bg-surface border border-slate-800/60 text-white disabled:opacity-30 hover:bg-slate-800 transition-all"
+            className="p-3 rounded-xl bg-surface border border-slate-200/60 text-slate-900 disabled:opacity-30 hover:bg-slate-100 transition-all"
           >
             <ChevronLeft size={18} />
           </button>
@@ -371,7 +371,7 @@ export default function Catalog() {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-brand text-white shadow-lg shadow-brand/20' : 'bg-surface border border-slate-800/60 text-slate-400 hover:text-white hover:border-slate-600'}`}
+                className={`w-10 h-10 flex items-center justify-center rounded-xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-brand text-slate-900 shadow-lg shadow-brand/20' : 'bg-surface border border-slate-200/60 text-slate-600 hover:text-slate-900 hover:border-slate-600'}`}
               >
                 {i + 1}
               </button>
@@ -381,7 +381,7 @@ export default function Catalog() {
           <button 
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
-            className="p-3 rounded-xl bg-surface border border-slate-800/60 text-white disabled:opacity-30 hover:bg-slate-800 transition-all"
+            className="p-3 rounded-xl bg-surface border border-slate-200/60 text-slate-900 disabled:opacity-30 hover:bg-slate-100 transition-all"
           >
             <ChevronRight size={18} />
           </button>

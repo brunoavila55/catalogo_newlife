@@ -71,30 +71,30 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-      <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative bg-surface border border-slate-700 w-full max-w-6xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+      <div className="absolute inset-0 bg-slate-200/90 backdrop-blur-md" onClick={onClose}></div>
+      <div className="relative bg-surface border border-slate-300 w-full max-w-6xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800 shrink-0">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 shrink-0">
           <div>
-            <h2 className="text-2xl font-condensed text-white uppercase tracking-wider">Catálogo de Equipamentos</h2>
-            <p className="text-sm text-slate-400">Selecione os equipamentos para adicionar ao projeto</p>
+            <h2 className="text-2xl font-condensed text-slate-900 uppercase tracking-wider">Catálogo de Equipamentos</h2>
+            <p className="text-sm text-slate-600">Selecione os equipamentos para adicionar ao projeto</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors">
             <X size={24} />
           </button>
         </div>
         
         {/* Filters & Search */}
-        <div className="p-6 border-b border-slate-800 shrink-0 bg-surface-dark/30 flex flex-col md:flex-row gap-4">
+        <div className="p-6 border-b border-slate-200 shrink-0 bg-surface-dark/30 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={20} />
             <input 
               type="text" 
               placeholder="Pesquise por nome, marca ou modelo..." 
               value={query}
               onChange={e => setQuery(e.target.value)}
-              className="w-full bg-surface-dark border border-slate-700 text-white pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+              className="w-full bg-surface-dark border border-slate-300 text-slate-900 pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
               autoFocus
             />
           </div>
@@ -102,7 +102,7 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
             <button
               onClick={() => setSelectedCategory('Todos')}
-              className={`px-4 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all ${selectedCategory === 'Todos' ? 'bg-brand text-white' : 'bg-surface border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
+              className={`px-4 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all ${selectedCategory === 'Todos' ? 'bg-brand text-slate-900' : 'bg-surface border border-slate-300 text-slate-600 hover:border-slate-500 hover:text-slate-900'}`}
             >
               Todos
             </button>
@@ -110,7 +110,7 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-brand text-white' : 'bg-surface border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
+                className={`px-4 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-brand text-slate-900' : 'bg-surface border border-slate-300 text-slate-600 hover:border-slate-500 hover:text-slate-900'}`}
               >
                 {cat}
               </button>
@@ -133,7 +133,7 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
                 const hasSecondImage = Boolean(secondImg);
 
                 return (
-                  <div key={p.id} className="group relative rounded-2xl overflow-hidden bg-surface border border-slate-800/60 hover:border-brand/40 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1 flex flex-col">
+                  <div key={p.id} className="group relative rounded-2xl overflow-hidden bg-surface border border-slate-200/60 hover:border-brand/40 transition-all duration-500 hover:shadow-xl hover:shadow-brand/5 hover:-translate-y-1 flex flex-col">
                     <div className="aspect-[4/3] bg-surface-dark relative overflow-hidden shrink-0">
                       {hasImage ? (
                         <>
@@ -164,12 +164,12 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
 
                     <div className="p-4 flex flex-col flex-1">
                       <span className="text-[10px] text-brand font-bold uppercase tracking-[0.15em] block mb-1">{p.category}</span>
-                      <h3 className="text-sm text-white font-condensed group-hover:text-brand transition-colors duration-300 mb-1 line-clamp-2">{p.name}</h3>
-                      <span className="text-xs text-slate-500 mt-auto pb-3 block">{p.brand}</span>
+                      <h3 className="text-sm text-slate-900 font-condensed group-hover:text-brand transition-colors duration-300 mb-1 line-clamp-2">{p.name}</h3>
+                      <span className="text-xs text-slate-600 mt-auto pb-3 block">{p.brand}</span>
                       
                       <button 
                         onClick={() => onAdd(p, 1)}
-                        className="w-full flex items-center justify-center gap-2 bg-brand/10 text-brand hover:bg-brand hover:text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border border-brand/20 mt-auto"
+                        className="w-full flex items-center justify-center gap-2 bg-brand/10 text-brand hover:bg-brand hover:text-slate-900 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border border-brand/20 mt-auto"
                       >
                         <PlusCircle size={16} /> Adicionar
                       </button>
@@ -180,11 +180,11 @@ export default function ProductSearchModal({ isOpen, onClose, onAdd }: ProductSe
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center">
-              <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
-                <Filter size={24} className="text-slate-500" />
+              <div className="w-16 h-16 bg-slate-100/50 rounded-full flex items-center justify-center mb-4">
+                <Filter size={24} className="text-slate-600" />
               </div>
-              <h3 className="text-xl font-condensed text-white mb-2">Nenhum equipamento encontrado</h3>
-              <p className="text-slate-500 max-w-sm">Não localizamos nenhum item para "{query}" nesta categoria.</p>
+              <h3 className="text-xl font-condensed text-slate-900 mb-2">Nenhum equipamento encontrado</h3>
+              <p className="text-slate-600 max-w-sm">Não localizamos nenhum item para "{query}" nesta categoria.</p>
             </div>
           )}
         </div>

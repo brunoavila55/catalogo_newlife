@@ -269,14 +269,14 @@ export default function ProductForm() {
     }
   };
 
-  if (loading) return <div className="text-slate-400 p-8">Carregando formulário...</div>;
+  if (loading) return <div className="text-slate-600 p-8">Carregando formulário...</div>;
 
   return (
     <div className="w-full max-w-7xl mx-auto pb-16">
       <div className="flex items-center gap-4 mb-6">
         <button 
           onClick={() => navigate('/gestor-nlf-admin/produtos')}
-          className="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors border border-slate-800"
+          className="p-2 text-slate-600 hover:text-slate-900 bg-slate-200 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200"
         >
           <ArrowLeft size={20} />
         </button>
@@ -288,67 +288,67 @@ export default function ProductForm() {
       <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column (Main Info) */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <div className="bg-slate-200 border border-slate-200 rounded-xl p-6 space-y-4">
             <h3 className="text-lg font-medium text-slate-200 mb-2">Informações Básicas</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Nome do Produto *</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Nome do Produto *</label>
                 <input 
                   type="text" required
                   value={name} onChange={e => setName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Marca</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Marca</label>
                 <input 
                   type="text" placeholder="Ex: Huawei, Cisco"
                   value={brand} onChange={e => setBrand(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Tipo de Equipamento</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Tipo de Equipamento</label>
                 <input 
                   type="text" placeholder="Ex: OLT, Switch, Roteador"
                   value={productType} onChange={e => setProductType(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Valor (Opcional)</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Valor (Opcional)</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2 text-slate-500 font-medium">R$</span>
+                  <span className="absolute left-3 top-2 text-slate-600 font-medium">R$</span>
                   <input 
                     type="text" placeholder="0,00"
                     value={price} onChange={e => setPrice(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                    className="w-full bg-slate-950 border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">Descrição Curta</label>
+              <label className="block text-sm font-medium text-slate-600 mb-1">Descrição Curta</label>
               <textarea 
                 rows={3}
                 value={description} onChange={e => setDescription(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand resize-none"
+                className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand resize-none"
               />
             </div>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="bg-slate-200 border border-slate-200 rounded-xl p-6">
             <h3 className="text-lg font-medium text-slate-200 mb-4">Galeria de Imagens</h3>
             
             {/* Image Grid */}
             {images.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-4">
                 {images.map((img, idx) => (
-                  <div key={idx} className={`relative group bg-slate-950 border rounded-lg aspect-square overflow-hidden flex flex-col ${idx === 0 ? 'border-brand' : 'border-slate-800'}`}>
+                  <div key={idx} className={`relative group bg-slate-950 border rounded-lg aspect-square overflow-hidden flex flex-col ${idx === 0 ? 'border-brand' : 'border-slate-200'}`}>
                     <img src={getThumbUrl(img)} className="w-full h-full object-contain p-2" />
                     {idx === 0 && (
                       <div className="absolute top-2 left-2 bg-brand text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded shadow">
@@ -359,11 +359,11 @@ export default function ProductForm() {
                       <Trash2 size={14} />
                     </button>
                     
-                    <div className="absolute bottom-0 left-0 w-full bg-slate-900/90 backdrop-blur border-t border-slate-800 flex justify-between p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button type="button" onClick={() => moveImage(idx, 'left')} disabled={idx === 0} className="p-1 text-slate-400 hover:text-white disabled:opacity-30">
+                    <div className="absolute bottom-0 left-0 w-full bg-slate-200/90 backdrop-blur border-t border-slate-200 flex justify-between p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button type="button" onClick={() => moveImage(idx, 'left')} disabled={idx === 0} className="p-1 text-slate-600 hover:text-slate-900 disabled:opacity-30">
                         <ChevronLeft size={16} />
                       </button>
-                      <button type="button" onClick={() => moveImage(idx, 'right')} disabled={idx === images.length - 1} className="p-1 text-slate-400 hover:text-white disabled:opacity-30">
+                      <button type="button" onClick={() => moveImage(idx, 'right')} disabled={idx === images.length - 1} className="p-1 text-slate-600 hover:text-slate-900 disabled:opacity-30">
                         <ChevronRight size={16} />
                       </button>
                     </div>
@@ -374,7 +374,7 @@ export default function ProductForm() {
 
             {/* Drag & Drop Area */}
             <div 
-              className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer ${isDragging ? 'border-brand bg-brand/5' : 'border-slate-800 hover:border-slate-700 bg-slate-950'}`}
+              className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer ${isDragging ? 'border-brand bg-brand/5' : 'border-slate-200 hover:border-slate-300 bg-slate-950'}`}
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={(e) => {
@@ -384,9 +384,9 @@ export default function ProductForm() {
               }}
               onClick={() => fileInputRef.current?.click()}
             >
-              <UploadCloud size={32} className="text-slate-500 mb-3" />
-              <p className="text-slate-300 font-medium mb-1">Clique ou arraste as imagens aqui</p>
-              <p className="text-slate-500 text-sm">A primeira imagem será a capa do produto</p>
+              <UploadCloud size={32} className="text-slate-600 mb-3" />
+              <p className="text-slate-600 font-medium mb-1">Clique ou arraste as imagens aqui</p>
+              <p className="text-slate-600 text-sm">A primeira imagem será a capa do produto</p>
               <input 
                 type="file" multiple accept="image/*" className="hidden" 
                 ref={fileInputRef}
@@ -396,15 +396,15 @@ export default function ProductForm() {
           </div>
 
           {/* Network Specs */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="bg-slate-200 border border-slate-200 rounded-xl p-6">
             <h3 className="text-lg font-medium text-slate-200 mb-4">Especificações de Rede</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Padrão Wi-Fi</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Padrão Wi-Fi</label>
                 <select 
                   value={netWifi} onChange={e => setNetWifi(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 >
                   <option value="">Não aplicável</option>
                   <option value="Wi-Fi 4">Wi-Fi 4</option>
@@ -416,10 +416,10 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Frequência / Largura de Banda</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Frequência / Largura de Banda</label>
                 <select 
                   value={netFreq} onChange={e => setNetFreq(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 >
                   <option value="">Não aplicável</option>
                   <option value="20 MHz">20 MHz</option>
@@ -431,37 +431,37 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Portas Disponíveis</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Portas Disponíveis</label>
                 <input 
                   type="text" placeholder="Ex: 4x LAN Gigabit, 1x WAN"
                   value={netPorts} onChange={e => setNetPorts(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Classe Wi-Fi / Velocidade</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Classe Wi-Fi / Velocidade</label>
                 <input 
                   type="text" placeholder="Ex: AX1800, AX3000, 1200Mbps"
                   value={netSpeed} onChange={e => setNetSpeed(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Alimentação</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Alimentação</label>
                 <input 
                   type="text" placeholder="Ex: 12V DC, PoE Passivo"
                   value={netPower} onChange={e => setNetPower(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Gerenciamento</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Gerenciamento</label>
                 <select 
                   value={netMgmt} onChange={e => setNetMgmt(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 >
                   <option value="">Não aplicável</option>
                   <option value="Não gerenciável">Não gerenciável</option>
@@ -472,18 +472,18 @@ export default function ProductForm() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-400 mb-1">Antenas</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Antenas</label>
                 <input 
                   type="text" placeholder="Ex: 4 Antenas Externas de 5dBi"
                   value={netAntennas} onChange={e => setNetAntennas(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
             </div>
           </div>
 
           {/* Dynamic Specs */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="bg-slate-200 border border-slate-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-slate-200">Ficha Técnica</h3>
               <button type="button" onClick={() => setSpecs([...specs, {key: '', value: ''}])} className="text-brand text-sm font-medium hover:underline flex items-center gap-1">
@@ -492,7 +492,7 @@ export default function ProductForm() {
             </div>
             
             {specs.length === 0 ? (
-              <p className="text-slate-500 text-sm text-center py-4 border border-dashed border-slate-800 rounded-lg">Nenhuma especificação técnica definida.</p>
+              <p className="text-slate-600 text-sm text-center py-4 border border-dashed border-slate-200 rounded-lg">Nenhuma especificação técnica definida.</p>
             ) : (
               <div className="space-y-3">
                 {specs.map((spec, i) => (
@@ -504,7 +504,7 @@ export default function ProductForm() {
                         newSpecs[i].key = e.target.value;
                         setSpecs(newSpecs);
                       }}
-                      className="w-1/3 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand"
+                      className="w-1/3 bg-slate-950 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand"
                     />
                     <input 
                       type="text" placeholder="Ex: 4 portas" value={spec.value}
@@ -513,9 +513,9 @@ export default function ProductForm() {
                         newSpecs[i].value = e.target.value;
                         setSpecs(newSpecs);
                       }}
-                      className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand"
+                      className="flex-1 bg-slate-950 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand"
                     />
-                    <button type="button" onClick={() => setSpecs(specs.filter((_, idx) => idx !== i))} className="p-2 text-slate-500 hover:text-red-400 bg-slate-950 border border-slate-800 hover:border-red-500/50 rounded-lg transition-colors">
+                    <button type="button" onClick={() => setSpecs(specs.filter((_, idx) => idx !== i))} className="p-2 text-slate-600 hover:text-red-400 bg-slate-950 border border-slate-200 hover:border-red-500/50 rounded-lg transition-colors">
                       <X size={18} />
                     </button>
                   </div>
@@ -527,14 +527,14 @@ export default function ProductForm() {
 
         {/* Right Column (Meta & Actions) */}
         <div className="space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+          <div className="bg-slate-200 border border-slate-200 rounded-xl p-6 space-y-4">
             <h3 className="text-lg font-medium text-slate-200 mb-2">Organização</h3>
             
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">Status *</label>
+              <label className="block text-sm font-medium text-slate-600 mb-1">Status *</label>
               <select 
                 value={status} onChange={e => setStatus(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
               >
                 <option value="Em estoque">Em estoque</option>
                 <option value="Em falta">Em falta</option>
@@ -543,21 +543,21 @@ export default function ProductForm() {
 
             {status === 'Em estoque' && (
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Quantidade em Estoque</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Quantidade em Estoque</label>
                 <input 
                   type="number" min="0" placeholder="Ex: 5"
                   value={stockCount} onChange={e => setStockCount(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                  className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">Categoria *</label>
+              <label className="block text-sm font-medium text-slate-600 mb-1">Categoria *</label>
               <select 
                 required
                 value={category} onChange={e => setCategory(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+                className="w-full bg-slate-950 border border-slate-200 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
               >
                 <option value="">Selecione uma categoria...</option>
                 {categoriesList.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
@@ -565,7 +565,7 @@ export default function ProductForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-2 mt-4">Tags do Produto</label>
+              <label className="block text-sm font-medium text-slate-600 mb-2 mt-4">Tags do Produto</label>
               
               <div className="flex gap-2 mb-3">
                 <input 
@@ -574,19 +574,19 @@ export default function ProductForm() {
                   value={newTagInput}
                   onChange={e => setNewTagInput(e.target.value)}
                   onKeyDown={handleCreateTag}
-                  className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-brand"
+                  className="flex-1 bg-slate-950 border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-brand"
                 />
                 <button 
                   type="button"
                   onClick={handleCreateTag}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-slate-700"
+                  className="bg-slate-100 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-slate-300"
                 >
                   Criar
                 </button>
               </div>
 
               {tagsList.length === 0 ? (
-                <p className="text-xs text-slate-500">Nenhuma tag criada ainda. Digite acima para criar.</p>
+                <p className="text-xs text-slate-600">Nenhuma tag criada ainda. Digite acima para criar.</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {tagsList.map(t => {
@@ -599,7 +599,7 @@ export default function ProductForm() {
                         className={`px-3 py-1 rounded-full text-xs font-medium transition-colors border ${
                           isActive 
                             ? 'bg-brand/20 text-brand border-brand/50' 
-                            : 'bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-600'
+                            : 'bg-slate-950 text-slate-600 border-slate-200 hover:border-slate-600'
                         }`}
                       >
                         {t.name}
