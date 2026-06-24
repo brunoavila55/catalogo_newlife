@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Download, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus } from 'lucide-react';
+import { ArrowLeft, Download, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus, X } from 'lucide-react';
 import { api, BASE_URL } from '../services/api';
 import { useCompare } from '../context/CompareContext';
 import { useProject } from '../context/ProjectContext';
@@ -401,6 +401,46 @@ export default function ProductDetail() {
             {product.specs.split('\n').map((line: string, i: number) => (
               <p key={i} className={line.trim() === '' ? 'h-4' : 'mb-4 text-slate-600 text-[15px]'}>{line}</p>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Use Cases (Pros/Cons) */}
+      {(specsMap['_use_cases_pro'] || specsMap['_use_cases_con']) && (
+        <div className="mt-12 bg-white border border-slate-100 rounded-2xl p-8 shadow-sm">
+          <h2 className="text-2xl text-slate-900 font-condensed mb-6">Recomendações de Uso</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {specsMap['_use_cases_pro'] && (
+              <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-6">
+                <h3 className="text-emerald-700 font-bold mb-4 flex items-center gap-2">
+                  <CheckCircle2 size={20} className="text-emerald-500" />
+                  Quando Usar
+                </h3>
+                <ul className="space-y-3">
+                  {specsMap['_use_cases_pro'].split('\n').filter(Boolean).map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
+                      <span className="text-emerald-500 font-bold">✓</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {specsMap['_use_cases_con'] && (
+              <div className="bg-rose-50/50 border border-rose-100 rounded-xl p-6">
+                <h3 className="text-rose-700 font-bold mb-4 flex items-center gap-2">
+                  <X size={20} className="text-rose-500" />
+                  Quando NÃO Usar
+                </h3>
+                <ul className="space-y-3">
+                  {specsMap['_use_cases_con'].split('\n').filter(Boolean).map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
+                      <span className="text-rose-500 font-bold">✗</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       )}

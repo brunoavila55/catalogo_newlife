@@ -60,6 +60,11 @@ export default function ProductForm() {
   const [ftthFiber, setFtthFiber] = useState('');
   const [ftthLoss, setFtthLoss] = useState('');
 
+
+  // Use cases (Pros/Cons)
+  const [useCasesPro, setUseCasesPro] = useState('');
+  const [useCasesCon, setUseCasesCon] = useState('');
+
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
 
   const [tagsList, setTagsList] = useState<Tag[]>([]);
@@ -131,6 +136,9 @@ export default function ProductForm() {
             setFtthConn(p.specs_json['_ftth_conn'] || '');
             setFtthFiber(p.specs_json['_ftth_fiber'] || '');
             setFtthLoss(p.specs_json['_ftth_loss'] || '');
+
+            setUseCasesPro(p.specs_json['_use_cases_pro'] || '');
+            setUseCasesCon(p.specs_json['_use_cases_con'] || '');
               
               setSfpForm(p.specs_json['_sfp_form'] || '');
               setSfpRate(p.specs_json['_sfp_rate'] || '');
@@ -152,6 +160,9 @@ export default function ProductForm() {
             setFtthFiber(p.specs_json['_ftth_fiber'] || '');
             setFtthLoss(p.specs_json['_ftth_loss'] || '');
 
+            setUseCasesPro(p.specs_json['_use_cases_pro'] || '');
+            setUseCasesCon(p.specs_json['_use_cases_con'] || '');
+
               setPonTech(p.specs_json['_pon_tech'] || '');
               setPonClass(p.specs_json['_pon_class'] || '');
               setPonTxPower(p.specs_json['_pon_txpower'] || '');
@@ -163,6 +174,9 @@ export default function ProductForm() {
             setFtthConn(p.specs_json['_ftth_conn'] || '');
             setFtthFiber(p.specs_json['_ftth_fiber'] || '');
             setFtthLoss(p.specs_json['_ftth_loss'] || '');
+
+            setUseCasesPro(p.specs_json['_use_cases_pro'] || '');
+            setUseCasesCon(p.specs_json['_use_cases_con'] || '');
 
 
 
@@ -216,6 +230,9 @@ export default function ProductForm() {
             setFtthConn(p.specs_json['_ftth_conn'] || '');
             setFtthFiber(p.specs_json['_ftth_fiber'] || '');
             setFtthLoss(p.specs_json['_ftth_loss'] || '');
+
+            setUseCasesPro(p.specs_json['_use_cases_pro'] || '');
+            setUseCasesCon(p.specs_json['_use_cases_con'] || '');
 
             const specArray = Object.entries(p.specs_json)
               .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_pon_') && !k.startsWith('_ftth_') && !k.startsWith('_'))
@@ -355,6 +372,9 @@ export default function ProductForm() {
       if (ftthConn) specsMap['_ftth_conn'] = ftthConn;
       if (ftthFiber) specsMap['_ftth_fiber'] = ftthFiber;
       if (ftthLoss) specsMap['_ftth_loss'] = ftthLoss;
+
+      if (useCasesPro.trim()) specsMap['_use_cases_pro'] = useCasesPro.trim();
+      if (useCasesCon.trim()) specsMap['_use_cases_con'] = useCasesCon.trim();
       if (stockCount && status === 'Em estoque') specsMap['_stock_count'] = stockCount;
       if (productType.trim()) specsMap['_type'] = productType.trim();
       if (price.trim()) specsMap['_price'] = price.trim();
