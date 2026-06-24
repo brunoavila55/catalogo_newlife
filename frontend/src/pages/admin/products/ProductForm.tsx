@@ -491,6 +491,29 @@ export default function ProductForm() {
                 className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-brand resize-none"
               />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-200">
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">✅ Quando Usar (Recomendações)</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Ex: Casas até 150m²\nAté 40 dispositivos conectados\nStreaming 4K"
+                  value={useCasesPro} onChange={e => setUseCasesPro(e.target.value)}
+                  className="w-full bg-white border border-emerald-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-emerald-500 resize-none placeholder:text-slate-400"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">Coloque um item por linha.</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">❌ Quando NÃO Usar (Limitações)</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Ex: Condomínio\nEmpresa com mais de 50 usuários\nAmbientes com muitas paredes de concreto"
+                  value={useCasesCon} onChange={e => setUseCasesCon(e.target.value)}
+                  className="w-full bg-white border border-rose-200 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-rose-500 resize-none placeholder:text-slate-400"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">Coloque um item por linha.</p>
+              </div>
+            </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
