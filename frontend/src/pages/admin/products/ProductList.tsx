@@ -121,26 +121,26 @@ export default function ProductList() {
       </div>
 
       {/* Toolbar */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row gap-4">
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
           <input 
             type="text" 
             placeholder="Buscar por nome ou marca..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-slate-200 focus:outline-none focus:border-brand"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-brand"
           />
         </div>
         <div className="relative min-w-[200px]">
-          <Filter size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Filter size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" />
           <select 
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value);
               setPage(1);
             }}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-slate-200 focus:outline-none focus:border-brand appearance-none"
+            className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-brand appearance-none"
           >
             <option value="">Todos os status</option>
             <option value="in-stock">Em estoque</option>
@@ -152,10 +152,10 @@ export default function ProductList() {
       </div>
 
       {/* Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-950 border-b border-slate-800 text-slate-400 text-sm">
+            <thead className="bg-white border-b border-slate-200 text-slate-600 text-sm">
               <tr>
                 <th className="px-6 py-4 font-medium">Produto</th>
                 <th className="px-6 py-4 font-medium">Categoria</th>
@@ -163,25 +163,25 @@ export default function ProductList() {
                 <th className="px-6 py-4 font-medium text-right">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/50">
+            <tbody className="divide-y divide-slate-200">
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
                     <td className="px-6 py-4 flex gap-4 items-center">
-                      <div className="w-12 h-12 bg-slate-800 rounded-lg"></div>
+                      <div className="w-12 h-12 bg-white rounded-lg"></div>
                       <div className="flex flex-col gap-2">
-                        <div className="h-4 w-32 bg-slate-800 rounded"></div>
-                        <div className="h-3 w-20 bg-slate-800 rounded"></div>
+                        <div className="h-4 w-32 bg-white rounded"></div>
+                        <div className="h-3 w-20 bg-white rounded"></div>
                       </div>
                     </td>
-                    <td className="px-6 py-4"><div className="h-4 w-24 bg-slate-800 rounded"></div></td>
-                    <td className="px-6 py-4"><div className="h-6 w-20 bg-slate-800 rounded-full"></div></td>
-                    <td className="px-6 py-4 text-right"><div className="h-8 w-16 bg-slate-800 rounded ml-auto"></div></td>
+                    <td className="px-6 py-4"><div className="h-4 w-24 bg-white rounded"></div></td>
+                    <td className="px-6 py-4"><div className="h-6 w-20 bg-white rounded-full"></div></td>
+                    <td className="px-6 py-4 text-right"><div className="h-8 w-16 bg-white rounded ml-auto"></div></td>
                   </tr>
                 ))
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={4} className="px-6 py-12 text-center text-slate-600">
                     <div className="flex flex-col items-center gap-3">
                       <Package size={32} className="text-slate-600" />
                       <p>Nenhum produto encontrado.</p>
@@ -197,10 +197,10 @@ export default function ProductList() {
                 products.map(product => {
                   const thumbUrl = getProductThumbImage(product);
                   return (
-                    <tr key={product.id} className="hover:bg-slate-800/20 transition-colors">
+                    <tr key={product.id} className="hover:bg-white/20 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 rounded-lg bg-white border border-slate-200 overflow-hidden flex items-center justify-center flex-shrink-0">
                             {thumbUrl ? (
                               <img src={thumbUrl} alt={product.name} className="w-full h-full object-contain p-1" />
                             ) : (
@@ -208,13 +208,13 @@ export default function ProductList() {
                             )}
                           </div>
                           <div>
-                            <p className="text-slate-200 font-medium">{product.name}</p>
-                            <p className="text-slate-500 text-sm">{product.brand}</p>
+                            <p className="text-slate-900 font-medium">{product.name}</p>
+                            <p className="text-slate-600 text-sm">{product.brand}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white text-slate-800">
                           {product.category}
                         </span>
                       </td>
@@ -231,14 +231,14 @@ export default function ProductList() {
                         <div className="flex justify-end gap-2">
                           <button 
                             onClick={() => handleDuplicate(product)}
-                            className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors"
+                            className="p-2 text-slate-600 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors"
                             title="Duplicar"
                           >
                             <Copy size={18} />
                           </button>
                           <button 
                             onClick={() => navigate(`/gestor-nlf-admin/produtos/${product.id}/editar`)}
-                            className="p-2 text-slate-400 hover:text-brand hover:bg-slate-800 rounded-lg transition-colors"
+                            className="p-2 text-slate-600 hover:text-brand hover:bg-white rounded-lg transition-colors"
                             title="Editar"
                           >
                             <Edit2 size={18} />
@@ -248,7 +248,7 @@ export default function ProductList() {
                               setProductToDelete(product);
                               setDeleteModalOpen(true);
                             }}
-                            className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                            className="p-2 text-slate-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
                             title="Excluir"
                           >
                             <Trash2 size={18} />
@@ -265,7 +265,7 @@ export default function ProductList() {
 
         {/* Pagination */}
         {!loading && pagination.total_pages > 1 && (
-          <div className="border-t border-slate-800 p-4 flex items-center justify-between text-sm text-slate-400">
+          <div className="border-t border-slate-200 p-4 flex items-center justify-between text-sm text-slate-600">
             <div>
               Mostrando página {pagination.page} de {pagination.total_pages} ({pagination.total} produtos)
             </div>
@@ -273,14 +273,14 @@ export default function ProductList() {
               <button 
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 rounded-lg border border-slate-800 hover:bg-slate-800 disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
+                className="p-2 rounded-lg border border-slate-200 hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
               >
                 <ChevronLeft size={18} />
               </button>
               <button 
                 onClick={() => setPage(p => Math.min(pagination.total_pages, p + 1))}
                 disabled={page === pagination.total_pages}
-                className="p-2 rounded-lg border border-slate-800 hover:bg-slate-800 disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
+                className="p-2 rounded-lg border border-slate-200 hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
               >
                 <ChevronRight size={18} />
               </button>
