@@ -28,6 +28,7 @@ export default function ProductForm() {
 
   // Network specific fields
   const [netWifi, setNetWifi] = useState('');
+  const [netMesh, setNetMesh] = useState('');
   const [netFreq, setNetFreq] = useState('');
   const [netPorts, setNetPorts] = useState('');
   const [netSpeed, setNetSpeed] = useState('');
@@ -110,6 +111,8 @@ export default function ProductForm() {
               setStockCount(p.specs_json['_stock_count'] || '');
               setPrice(p.specs_json['_price'] || '');
               setNetWifi(p.specs_json['_net_wifi'] || '');
+            setNetMesh(p.specs_json['_net_mesh'] || '');
+            setNetMesh(p.specs_json['_net_mesh'] || '');
               setNetFreq(p.specs_json['_net_freq'] || '');
               setNetPorts(p.specs_json['_net_ports'] || '');
               setNetSpeed(p.specs_json['_net_speed'] || '');
@@ -217,6 +220,7 @@ export default function ProductForm() {
             setStockCount(p.specs_json['_stock_count'] || '');
             setPrice(p.specs_json['_price'] || '');
             setNetWifi(p.specs_json['_net_wifi'] || '');
+            setNetMesh(p.specs_json['_net_mesh'] || '');
             setNetFreq(p.specs_json['_net_freq'] || '');
             setNetPorts(p.specs_json['_net_ports'] || '');
             setNetSpeed(p.specs_json['_net_speed'] || '');
@@ -362,6 +366,7 @@ export default function ProductForm() {
       }, {} as Record<string, string>);
 
       if (netWifi) specsMap['_net_wifi'] = netWifi;
+      if (netMesh) specsMap['_net_mesh'] = netMesh;
       if (netFreq) specsMap['_net_freq'] = netFreq;
       if (netPorts) specsMap['_net_ports'] = netPorts;
       if (netSpeed) specsMap['_net_speed'] = netSpeed;

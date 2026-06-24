@@ -82,6 +82,7 @@ export default function ProductDetail() {
   
   const netSpecs = {
     wifi: specsMap['_net_wifi'] || '',
+    mesh: specsMap['_net_mesh'] === 'Sim' ? 'Suportado' : '',
     freq: specsMap['_net_freq'] || '',
     ports: specsMap['_net_ports'] || '',
     speed: specsMap['_net_speed'] || '',
@@ -284,6 +285,17 @@ export default function ProductDetail() {
           {/* Network Specs Highlights */}
           {hasNetSpecs && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+              {netSpecs.mesh && (
+                <div className="bg-white border border-slate-100 hover:border-emerald-500/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center">
+                    <Network size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Rede Mesh</span>
+                    <span className="text-sm text-slate-800 font-semibold">{netSpecs.mesh}</span>
+                  </div>
+                </div>
+              )}
               {netSpecs.wifi && (
                 <div className="bg-white border border-slate-100 hover:border-brand/30 hover:shadow-sm transition-all rounded-xl p-4 flex flex-col gap-2">
                   <div className="w-8 h-8 rounded-lg bg-brand/5 text-brand flex items-center justify-center">
