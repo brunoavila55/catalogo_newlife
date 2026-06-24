@@ -124,7 +124,7 @@ export default function Catalog() {
       });
       return () => ctx.revert();
     }
-  }, [loading, selectedCategory, selectedType, selectedTags.length, visibleCount]);
+  }, [loading, selectedCategory, selectedType, selectedTags.length]);
 
   const clearFilters = () => {
     setSearchInput('');
