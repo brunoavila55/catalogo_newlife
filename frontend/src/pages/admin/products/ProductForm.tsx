@@ -388,8 +388,10 @@ export default function ProductForm() {
       if (ftthFiber) specsMap['_ftth_fiber'] = ftthFiber;
       if (ftthLoss) specsMap['_ftth_loss'] = ftthLoss;
 
-      if (useCasesPro.trim()) specsMap['_use_cases_pro'] = useCasesPro.trim();
-      if (useCasesCon.trim()) specsMap['_use_cases_con'] = useCasesCon.trim();
+      const proStr = useCasesPro.map(s => typeof s === 'string' ? s.trim() : '').filter(Boolean).join('\n');
+      const conStr = useCasesCon.map(s => typeof s === 'string' ? s.trim() : '').filter(Boolean).join('\n');
+      if (proStr) specsMap['_use_cases_pro'] = proStr;
+      if (conStr) specsMap['_use_cases_con'] = conStr;
       if (stockCount && status === 'Em estoque') specsMap['_stock_count'] = stockCount;
       if (productType.trim()) specsMap['_type'] = productType.trim();
       if (price.trim()) specsMap['_price'] = price.trim();
