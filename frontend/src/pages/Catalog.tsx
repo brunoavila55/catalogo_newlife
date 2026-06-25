@@ -280,18 +280,20 @@ export default function Catalog() {
       </div>
 
       {/* Products Grid */}
-      <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 min-h-[400px]">
+      <div ref={gridRef} className="min-h-[400px]">
         {loading ? (
-          Array(8).fill(0).map((_, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden bg-surface border border-slate-200/60">
-              <div className="aspect-[4/3] animate-shimmer"></div>
-              <div className="p-5 space-y-3">
-                <div className="h-3 w-16 animate-shimmer rounded"></div>
-                <div className="h-5 w-3/4 animate-shimmer rounded"></div>
-                <div className="h-3 w-1/2 animate-shimmer rounded"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {Array(8).fill(0).map((_, i) => (
+              <div key={i} className="rounded-2xl overflow-hidden bg-surface border border-slate-200/60">
+                <div className="aspect-[4/3] animate-shimmer"></div>
+                <div className="p-5 space-y-3">
+                  <div className="h-3 w-16 animate-shimmer rounded"></div>
+                  <div className="h-5 w-3/4 animate-shimmer rounded"></div>
+                  <div className="h-3 w-1/2 animate-shimmer rounded"></div>
+                </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : filteredProducts.slice(0, visibleCount).length === 0 ? (
           <div className="col-span-full py-20 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 rounded-2xl bg-slate-100/50 flex items-center justify-center mb-4">
@@ -307,51 +309,69 @@ export default function Catalog() {
             </button>
           </div>
         ) : (
-          filteredProducts.slice(0, visibleCount).map((p) => {
-            const mainImg = getProductMainImage(p);
-            const secondImg = getProductSecondImage(p);
-            const hasImage = Boolean(mainImg);
-            const hasSecondImage = Boolean(secondImg);
-            const isInCompare = compareList.find(c => c.id === p.id);
+          <div className="space-y-16">
+            {Object.entries(
+              filteredProducts.slice(0, visibleCount).reduce((acc, p) => {
+                if (!acc[p.category]) acc[p.category] = [];
+                acc[p.category].push(p);
+                return acc;
+              }, {} as Record<string, any[]>)
+            ).map(([category, prods]) => (
+              <div key={category} className="space-y-6">
+                <h2 className="text-2xl font-condensed text-slate-900 border-b border-slate-200 pb-2 uppercase tracking-wide">
+                  {category}
+                  <span className="ml-3 text-sm text-slate-400 font-sans tracking-normal capitalize">{prods.length} {prods.length === 1 ? 'item' : 'itens'}</span>
+                </h2>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {prods.map((p) => {
+                    const mainImg = getProductMainImage(p);
+                    const secondImg = getProductSecondImage(p);
+                    const hasImage = Boolean(mainImg);
+                    const hasSecondImage = Boolean(secondImg);
+                    const isInCompare = compareList.find(c => c.id === p.id);
 
-            return (
-              <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-white border border-slate-200 hover:border-brand/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
-                <div className="aspect-[4/3] bg-transparent relative overflow-hidden transition-colors duration-500">
-                  {hasImage ? (
-                    <>
-                      <img src={mainImg} alt={p.name} loading="lazy" decoding="async" className="w-full h-full object-contain p-4 transition-all duration-700 group-hover:scale-105" />
-                      {hasSecondImage && (
-                        <img src={secondImg} alt={p.name + ' verso'} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-contain p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      )}
-                    </>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center"><Zap size={32} className="text-slate-700" /></div>
-                  )}
-                  
+                    return (
+                      <div key={p.id} className="product-card group relative rounded-2xl overflow-hidden bg-white border border-slate-200 hover:border-brand/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand/5 hover:-translate-y-1 cursor-pointer" onClick={() => navigate(`/produto/${p.slug}`)}>
+                        <div className="aspect-[4/3] bg-transparent relative overflow-hidden transition-colors duration-500">
+                          {hasImage ? (
+                            <>
+                              <img src={mainImg} alt={p.name} loading="lazy" decoding="async" className="w-full h-full object-contain p-4 transition-all duration-700 group-hover:scale-105" />
+                              {hasSecondImage && (
+                                <img src={secondImg} alt={p.name + ' verso'} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-contain p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                              )}
+                            </>
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center"><Zap size={32} className="text-slate-700" /></div>
+                          )}
+                          
+                          <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="p-5">
+                          <span className="text-[11px] text-brand font-bold uppercase tracking-[0.15em] block mb-1.5">{p.category}</span>
+                          <h3 className="text-base text-slate-900 font-condensed group-hover:text-brand transition-colors duration-300">{p.name}</h3>
+                          <span className="text-sm text-slate-600">{p.brand}</span>
+                          
+                          {p.tags && p.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mt-3">
+                              {p.tags.slice(0, 3).map((t: string) => (
+                                <span key={t} className="px-2 py-0.5 bg-slate-100 text-[10px] uppercase tracking-wider text-slate-600 rounded-md border border-slate-300/50">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      </div>
+                    );
+                  })}
                 </div>
-
-                <div className="p-5">
-                  <span className="text-[11px] text-brand font-bold uppercase tracking-[0.15em] block mb-1.5">{p.category}</span>
-                  <h3 className="text-base text-slate-900 font-condensed group-hover:text-brand transition-colors duration-300">{p.name}</h3>
-                  <span className="text-sm text-slate-600">{p.brand}</span>
-                  
-                  {p.tags && p.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-3">
-                      {p.tags.slice(0, 3).map((t: string) => (
-                        <span key={t} className="px-2 py-0.5 bg-slate-100 text-[10px] uppercase tracking-wider text-slate-600 rounded-md border border-slate-300/50">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-            );
-          })
+            ))}
+          </div>
         )}
       </div>
 
