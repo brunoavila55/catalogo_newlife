@@ -56,6 +56,34 @@ export default function ProductForm() {
 
   // FTTH Passive / Splitter fields
   const [ftthType, setFtthType] = useState('');
+  const [netMesh, setNetMesh] = useState('');
+  const [netFreq, setNetFreq] = useState('');
+  const [netPorts, setNetPorts] = useState('');
+  const [netSpeed, setNetSpeed] = useState('');
+  const [netPower, setNetPower] = useState('');
+  const [netMgmt, setNetMgmt] = useState('');
+  const [netAntennas, setNetAntennas] = useState('');
+
+
+  // Transceiver SFP specific fields
+  const [sfpForm, setSfpForm] = useState('');
+  const [sfpRate, setSfpRate] = useState('');
+  const [sfpWave, setSfpWave] = useState('');
+  const [sfpDist, setSfpDist] = useState('');
+  const [sfpConn, setSfpConn] = useState('');
+  const [sfpMode, setSfpMode] = useState('');
+
+
+  // OLT PON Module specific fields
+  const [ponTech, setPonTech] = useState('');
+  const [ponClass, setPonClass] = useState('');
+  const [ponTxPower, setPonTxPower] = useState('');
+  const [ponRxSens, setPonRxSens] = useState('');
+  const [ponWave, setPonWave] = useState('');
+
+
+  // FTTH Passive / Splitter fields
+  const [ftthType, setFtthType] = useState('');
   const [ftthSplit, setFtthSplit] = useState('');
   const [ftthConn, setFtthConn] = useState('');
   const [ftthFiber, setFtthFiber] = useState('');
@@ -63,8 +91,8 @@ export default function ProductForm() {
 
 
   // Use cases (Pros/Cons)
-  const [useCasesPro, setUseCasesPro] = useState('');
-  const [useCasesCon, setUseCasesCon] = useState('');
+  const [useCasesPro, setUseCasesPro] = useState<string[]>(['', '', '', '', '']);
+  const [useCasesCon, setUseCasesCon] = useState<string[]>(['', '', '', '', '']);
 
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
 
@@ -111,68 +139,20 @@ export default function ProductForm() {
               setStockCount(p.specs_json['_stock_count'] || '');
               setPrice(p.specs_json['_price'] || '');
               setNetWifi(p.specs_json['_net_wifi'] || '');
-            setNetMesh(p.specs_json['_net_mesh'] || '');
-            setNetMesh(p.specs_json['_net_mesh'] || '');
+              setNetMesh(p.specs_json['_net_mesh'] || '');
               setNetFreq(p.specs_json['_net_freq'] || '');
               setNetPorts(p.specs_json['_net_ports'] || '');
               setNetSpeed(p.specs_json['_net_speed'] || '');
               setNetPower(p.specs_json['_net_power'] || '');
               setNetMgmt(p.specs_json['_net_mgmt'] || '');
-
               setNetAntennas(p.specs_json['_net_antennas'] || '');
 
-            setSfpForm(p.specs_json['_sfp_form'] || '');
-            setSfpRate(p.specs_json['_sfp_rate'] || '');
-            setSfpWave(p.specs_json['_sfp_wave'] || '');
-            setSfpDist(p.specs_json['_sfp_dist'] || '');
-            setSfpConn(p.specs_json['_sfp_conn'] || '');
-            setSfpMode(p.specs_json['_sfp_mode'] || '');
-
-            setPonTech(p.specs_json['_pon_tech'] || '');
-            setPonClass(p.specs_json['_pon_class'] || '');
-            setPonTxPower(p.specs_json['_pon_txpower'] || '');
-            setPonRxSens(p.specs_json['_pon_rxsens'] || '');
-            setPonWave(p.specs_json['_pon_wave'] || '');
-
-            setFtthType(p.specs_json['_ftth_type'] || '');
-            setFtthSplit(p.specs_json['_ftth_split'] || '');
-            setFtthConn(p.specs_json['_ftth_conn'] || '');
-            setFtthFiber(p.specs_json['_ftth_fiber'] || '');
-            setFtthLoss(p.specs_json['_ftth_loss'] || '');
-
-            
-            setUseCasesPro(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_pro'] || '').split('\n')[i] || ''));
-
-            
-            setUseCasesCon(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_con'] || '').split('\n')[i] || ''));
-
-              
               setSfpForm(p.specs_json['_sfp_form'] || '');
               setSfpRate(p.specs_json['_sfp_rate'] || '');
               setSfpWave(p.specs_json['_sfp_wave'] || '');
               setSfpDist(p.specs_json['_sfp_dist'] || '');
               setSfpConn(p.specs_json['_sfp_conn'] || '');
-
               setSfpMode(p.specs_json['_sfp_mode'] || '');
-
-            setPonTech(p.specs_json['_pon_tech'] || '');
-            setPonClass(p.specs_json['_pon_class'] || '');
-            setPonTxPower(p.specs_json['_pon_txpower'] || '');
-            setPonRxSens(p.specs_json['_pon_rxsens'] || '');
-            setPonWave(p.specs_json['_pon_wave'] || '');
-
-            setFtthType(p.specs_json['_ftth_type'] || '');
-            setFtthSplit(p.specs_json['_ftth_split'] || '');
-            setFtthConn(p.specs_json['_ftth_conn'] || '');
-            setFtthFiber(p.specs_json['_ftth_fiber'] || '');
-            setFtthLoss(p.specs_json['_ftth_loss'] || '');
-
-            
-            setUseCasesPro(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_pro'] || '').split('\n')[i] || ''));
-
-            
-            setUseCasesCon(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_con'] || '').split('\n')[i] || ''));
-
 
               setPonTech(p.specs_json['_pon_tech'] || '');
               setPonClass(p.specs_json['_pon_class'] || '');
@@ -180,23 +160,17 @@ export default function ProductForm() {
               setPonRxSens(p.specs_json['_pon_rxsens'] || '');
               setPonWave(p.specs_json['_pon_wave'] || '');
 
-            setFtthType(p.specs_json['_ftth_type'] || '');
-            setFtthSplit(p.specs_json['_ftth_split'] || '');
-            setFtthConn(p.specs_json['_ftth_conn'] || '');
-            setFtthFiber(p.specs_json['_ftth_fiber'] || '');
-            setFtthLoss(p.specs_json['_ftth_loss'] || '');
+              setFtthType(p.specs_json['_ftth_type'] || '');
+              setFtthSplit(p.specs_json['_ftth_split'] || '');
+              setFtthConn(p.specs_json['_ftth_conn'] || '');
+              setFtthFiber(p.specs_json['_ftth_fiber'] || '');
+              setFtthLoss(p.specs_json['_ftth_loss'] || '');
 
-            
-            setUseCasesPro(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_pro'] || '').split('\n')[i] || ''));
-
-            
-            setUseCasesCon(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_con'] || '').split('\n')[i] || ''));
-
-
-
+              setUseCasesPro(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_pro'] || '').split('\n')[i] || ''));
+              setUseCasesCon(Array(5).fill('').map((_, i) => (p.specs_json['_use_cases_con'] || '').split('\n')[i] || ''));
 
               const specArray = Object.entries(p.specs_json)
-                .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_pon_') && !k.startsWith('_ftth_'))
+                .filter(([k]) => !k.startsWith('_net_') && !k.startsWith('_sfp_') && !k.startsWith('_pon_') && !k.startsWith('_ftth_') && !k.startsWith('_'))
                 .map(([k, v]) => ({ key: k, value: v as string }));
               setSpecs(specArray);
             }
