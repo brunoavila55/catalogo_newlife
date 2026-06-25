@@ -56,34 +56,6 @@ export default function ProductForm() {
 
   // FTTH Passive / Splitter fields
   const [ftthType, setFtthType] = useState('');
-  const [netMesh, setNetMesh] = useState('');
-  const [netFreq, setNetFreq] = useState('');
-  const [netPorts, setNetPorts] = useState('');
-  const [netSpeed, setNetSpeed] = useState('');
-  const [netPower, setNetPower] = useState('');
-  const [netMgmt, setNetMgmt] = useState('');
-  const [netAntennas, setNetAntennas] = useState('');
-
-
-  // Transceiver SFP specific fields
-  const [sfpForm, setSfpForm] = useState('');
-  const [sfpRate, setSfpRate] = useState('');
-  const [sfpWave, setSfpWave] = useState('');
-  const [sfpDist, setSfpDist] = useState('');
-  const [sfpConn, setSfpConn] = useState('');
-  const [sfpMode, setSfpMode] = useState('');
-
-
-  // OLT PON Module specific fields
-  const [ponTech, setPonTech] = useState('');
-  const [ponClass, setPonClass] = useState('');
-  const [ponTxPower, setPonTxPower] = useState('');
-  const [ponRxSens, setPonRxSens] = useState('');
-  const [ponWave, setPonWave] = useState('');
-
-
-  // FTTH Passive / Splitter fields
-  const [ftthType, setFtthType] = useState('');
   const [ftthSplit, setFtthSplit] = useState('');
   const [ftthConn, setFtthConn] = useState('');
   const [ftthFiber, setFtthFiber] = useState('');
