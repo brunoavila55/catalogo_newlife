@@ -9,8 +9,11 @@ import { getImageUrl } from '../utils/image';
 
 export default function ProductDetail() {
   const { slug } = useParams();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [product, setProduct] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
@@ -33,12 +36,13 @@ export default function ProductDetail() {
             if (relRes.ok) {
               const relData = await relRes.json();
               const filtered = (relData.data || [])
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .filter((p: any) => p.category === data.category && p.id !== data.id)
                 .slice(0, 4);
               setRelatedProducts(filtered);
             }
-          } catch (e) {
-            console.error("Erro ao buscar relacionados", e);
+          } catch (err) {
+            console.error("Erro ao buscar relacionados", err);
           }
 
           if (data.is_homologado) {
@@ -47,15 +51,15 @@ export default function ProductDetail() {
               if (analysisRes.ok) {
                 setAnalysis(await analysisRes.json());
               }
-            } catch (e) {
-              console.error("Erro ao buscar análise", e);
+            } catch (err) {
+              console.error("Erro ao buscar análise", err);
             }
           }
         } else {
           setProduct(null);
         }
-      } catch (e) {
-        console.error(e);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -291,7 +295,7 @@ export default function ProductDetail() {
                 try {
                   addItem(product, 1);
                   toast.success('Equipamento adicionado ao Projeto!');
-                } catch (err) {
+                } catch {
                   toast.error('Crie um projeto primeiro na aba Projetos!');
                 }
               }}

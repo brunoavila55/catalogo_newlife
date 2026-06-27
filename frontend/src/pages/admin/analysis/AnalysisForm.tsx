@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, UploadCloud, X, Check } from 'lucide-react';
+import { ArrowLeft, Save, UploadCloud, X } from 'lucide-react';
 import { api } from '../../../services/api';
 import { useToast } from '../../../context/ToastContext';
 import { getImageUrl } from '../../../utils/image';
@@ -37,7 +37,7 @@ export default function AnalysisForm() {
         const pRes = await api.get('/products?limit=1000');
         if (pRes.ok) {
           const pData = await pRes.json();
-          setProducts(pData.data.map((p: any) => ({ id: p.id, name: p.name })));
+          setProducts(pData.data.map((p: { id: number; name: string }) => ({ id: p.id, name: p.name })));
         }
 
         if (isEditing) {
@@ -52,13 +52,15 @@ export default function AnalysisForm() {
             setObservations(data.observations || '');
           }
         }
-      } catch (e) {
+      } catch (err) {
+        console.error(err);
         toast.error('Erro ao carregar dados');
       } finally {
         setLoading(false);
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleUpload = async (file: File | null, field: 1 | 2 | 3 | 4, label: string) => {
@@ -79,7 +81,8 @@ export default function AnalysisForm() {
       } else {
         toast.error('Falha no upload');
       }
-    } catch (e) {
+    } catch (err) {
+      console.error(err);
       toast.error('Erro no upload');
     } finally {
       setUploading(false);
@@ -112,8 +115,9 @@ export default function AnalysisForm() {
 
       toast.success('Análise salva com sucesso!');
       navigate('/gestor-nlf-admin/analise');
-    } catch (e: any) {
-      toast.error(`Erro ao salvar análise: ${e.message}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Erro desconhecido';
+      toast.error(`Erro ao salvar análise: ${msg}`);
     } finally {
       setSaving(false);
     }

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle, Search, Edit, Trash2, ShieldCheck, Activity } from 'lucide-react';
 import { api } from '../../../services/api';
 import { useToast } from '../../../context/ToastContext';
-import { getImageUrl } from '../../../utils/image';
 
 interface Analysis {
   id: number;
@@ -18,7 +17,6 @@ export default function AnalysisList() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const toast = useToast();
-  const navigate = useNavigate();
 
   const fetchAnalyses = async () => {
     try {
@@ -26,7 +24,8 @@ export default function AnalysisList() {
       if (res.ok) {
         setAnalyses(await res.json() || []);
       }
-    } catch (e) {
+    } catch (err) {
+      console.error(err);
       toast.error('Erro ao buscar análises');
     } finally {
       setLoading(false);
@@ -34,6 +33,7 @@ export default function AnalysisList() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     fetchAnalyses();
   }, []);
 
@@ -48,7 +48,8 @@ export default function AnalysisList() {
       } else {
         toast.error('Erro ao remover análise');
       }
-    } catch (e) {
+    } catch (err) {
+      console.error(err);
       toast.error('Erro de conexão');
     }
   };
