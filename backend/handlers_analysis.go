@@ -16,6 +16,7 @@ type EquipmentAnalysis struct {
 	SpeedTest1Img string    `json:"speed_test_1_img"`
 	SpeedTest2Img string    `json:"speed_test_2_img"`
 	SpeedTest3Img string    `json:"speed_test_3_img"`
+	SpeedTest4Img string    `json:"speed_test_4_img"`
 	Observations  string    `json:"observations"`
 	CreatedAt     time.Time `json:"created_at"`
 	
@@ -34,10 +35,10 @@ func getAnalysisByProductHandler(w http.ResponseWriter, r *http.Request) {
 
 	var a EquipmentAnalysis
 	var createdAt string
-	var st1, st2, st3, obs sql.NullString
+	var st1, st2, st3, st4, obs sql.NullString
 
-	err = db.QueryRow("SELECT id, product_id, speed_test_1_img, speed_test_2_img, speed_test_3_img, observations, created_at FROM equipment_analysis WHERE product_id = ?", productID).
-		Scan(&a.ID, &a.ProductID, &st1, &st2, &st3, &obs, &createdAt)
+	err = db.QueryRow("SELECT id, product_id, speed_test_1_img, speed_test_2_img, speed_test_3_img, speed_test_4_img, observations, created_at FROM equipment_analysis WHERE product_id = ?", productID).
+		Scan(&a.ID, &a.ProductID, &st1, &st2, &st3, &st4, &obs, &createdAt)
 	
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -53,6 +54,7 @@ func getAnalysisByProductHandler(w http.ResponseWriter, r *http.Request) {
 	a.SpeedTest1Img = st1.String
 	a.SpeedTest2Img = st2.String
 	a.SpeedTest3Img = st3.String
+	a.SpeedTest4Img = st4.String
 	a.Observations = obs.String
 	t, _ := time.Parse(time.RFC3339, createdAt)
 	a.CreatedAt = t
@@ -63,7 +65,7 @@ func getAnalysisByProductHandler(w http.ResponseWriter, r *http.Request) {
 
 func getAllAnalysisHandler(w http.ResponseWriter, r *http.Request) {
 	query := `
-		SELECT a.id, a.product_id, a.speed_test_1_img, a.speed_test_2_img, a.speed_test_3_img, a.observations, a.created_at, p.name, p.slug
+		SELECT a.id, a.product_id, a.speed_test_1_img, a.speed_test_2_img, a.speed_test_3_img, a.speed_test_4_img, a.observations, a.created_at, p.name, p.slug
 		FROM equipment_analysis a
 		JOIN products p ON a.product_id = p.id
 		ORDER BY a.created_at DESC
@@ -79,15 +81,16 @@ func getAllAnalysisHandler(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var a EquipmentAnalysis
 		var createdAt string
-		var st1, st2, st3, obs sql.NullString
+		var st1, st2, st3, st4, obs sql.NullString
 		
-		if err := rows.Scan(&a.ID, &a.ProductID, &st1, &st2, &st3, &obs, &createdAt, &a.ProductName, &a.ProductSlug); err != nil {
+		if err := rows.Scan(&a.ID, &a.ProductID, &st1, &st2, &st3, &st4, &obs, &createdAt, &a.ProductName, &a.ProductSlug); err != nil {
 			continue
 		}
 		
 		a.SpeedTest1Img = st1.String
 		a.SpeedTest2Img = st2.String
 		a.SpeedTest3Img = st3.String
+		a.SpeedTest4Img = st4.String
 		a.Observations = obs.String
 		t, _ := time.Parse(time.RFC3339, createdAt)
 		a.CreatedAt = t
@@ -129,16 +132,17 @@ func createOrUpdateAnalysisHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Upsert query
 	query := `
-		INSERT INTO equipment_analysis (product_id, speed_test_1_img, speed_test_2_img, speed_test_3_img, observations)
-		VALUES (?, ?, ?, ?, ?)
+		INSERT INTO equipment_analysis (product_id, speed_test_1_img, speed_test_2_img, speed_test_3_img, speed_test_4_img, observations)
+		VALUES (?, ?, ?, ?, ?, ?)
 		ON CONFLICT(product_id) DO UPDATE SET
 			speed_test_1_img = excluded.speed_test_1_img,
 			speed_test_2_img = excluded.speed_test_2_img,
 			speed_test_3_img = excluded.speed_test_3_img,
+			speed_test_4_img = excluded.speed_test_4_img,
 			observations = excluded.observations;
 	`
 	
-	_, err = db.Exec(query, req.ProductID, req.SpeedTest1Img, req.SpeedTest2Img, req.SpeedTest3Img, req.Observations)
+	_, err = db.Exec(query, req.ProductID, req.SpeedTest1Img, req.SpeedTest2Img, req.SpeedTest3Img, req.SpeedTest4Img, req.Observations)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

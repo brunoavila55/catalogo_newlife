@@ -25,6 +25,7 @@ export default function AnalysisForm() {
   const [speedTest1, setSpeedTest1] = useState('');
   const [speedTest2, setSpeedTest2] = useState('');
   const [speedTest3, setSpeedTest3] = useState('');
+  const [speedTest4, setSpeedTest4] = useState('');
   const [observations, setObservations] = useState('');
 
   const isEditing = Boolean(id);
@@ -47,6 +48,7 @@ export default function AnalysisForm() {
             setSpeedTest1(data.speed_test_1_img || '');
             setSpeedTest2(data.speed_test_2_img || '');
             setSpeedTest3(data.speed_test_3_img || '');
+            setSpeedTest4(data.speed_test_4_img || '');
             setObservations(data.observations || '');
           }
         }
@@ -59,7 +61,7 @@ export default function AnalysisForm() {
     fetchData();
   }, [id]);
 
-  const handleUpload = async (file: File | null, field: 1 | 2 | 3) => {
+  const handleUpload = async (file: File | null, field: 1 | 2 | 3 | 4, label: string) => {
     if (!file) return;
     setUploading(true);
     try {
@@ -72,7 +74,8 @@ export default function AnalysisForm() {
         if (field === 1) setSpeedTest1(data.url);
         if (field === 2) setSpeedTest2(data.url);
         if (field === 3) setSpeedTest3(data.url);
-        toast.success(`Upload do teste ${field} concluído`);
+        if (field === 4) setSpeedTest4(data.url);
+        toast.success(`Upload de ${label} concluído`);
       } else {
         toast.error('Falha no upload');
       }
@@ -97,6 +100,7 @@ export default function AnalysisForm() {
         speed_test_1_img: speedTest1,
         speed_test_2_img: speedTest2,
         speed_test_3_img: speedTest3,
+        speed_test_4_img: speedTest4,
         observations
       };
 
@@ -115,14 +119,14 @@ export default function AnalysisForm() {
     }
   };
 
-  const renderUploadBox = (field: 1 | 2 | 3, value: string, setValue: (val: string) => void) => {
+  const renderUploadBox = (field: 1 | 2 | 3 | 4, label: string, value: string, setValue: (val: string) => void) => {
     return (
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col items-center">
-        <span className="text-sm font-semibold text-slate-700 mb-3">Print Teste {field}</span>
+        <span className="text-sm font-semibold text-slate-700 mb-3">{label}</span>
         
         {value ? (
           <div className="relative w-full aspect-video bg-white rounded-lg border border-slate-200 overflow-hidden group">
-            <img src={getImageUrl(value)} alt={`Teste ${field}`} className="w-full h-full object-contain" />
+            <img src={getImageUrl(value)} alt={label} className="w-full h-full object-contain" />
             <button
               type="button"
               onClick={() => setValue('')}
@@ -142,7 +146,7 @@ export default function AnalysisForm() {
               className="hidden" 
               onChange={(e) => {
                 if (e.target.files && e.target.files.length > 0) {
-                  handleUpload(e.target.files[0], field);
+                  handleUpload(e.target.files[0], field, label);
                 }
               }} 
             />
@@ -189,10 +193,11 @@ export default function AnalysisForm() {
 
           <div className="mb-8">
             <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2">Prints de Testes de Velocidade</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {renderUploadBox(1, speedTest1, setSpeedTest1)}
-              {renderUploadBox(2, speedTest2, setSpeedTest2)}
-              {renderUploadBox(3, speedTest3, setSpeedTest3)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {renderUploadBox(1, 'Cabeado', speedTest1, setSpeedTest1)}
+              {renderUploadBox(2, 'Wi-Fi Perto', speedTest2, setSpeedTest2)}
+              {renderUploadBox(3, 'Wi-Fi Média Distância', speedTest3, setSpeedTest3)}
+              {renderUploadBox(4, 'Wi-Fi Longe', speedTest4, setSpeedTest4)}
             </div>
           </div>
 

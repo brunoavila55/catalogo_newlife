@@ -485,23 +485,32 @@ export default function ProductDetail() {
           </h2>
           
           <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 mb-4">Testes de Velocidade</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[analysis.speed_test_1_img, analysis.speed_test_2_img, analysis.speed_test_3_img].map((img, idx) => (
-                  <div key={idx} className="bg-surface rounded-xl p-2 border border-slate-100 flex flex-col items-center">
-                    <span className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest mt-2">Teste {idx + 1}</span>
-                    {img ? (
-                      <a href={getImageUrl(img)} target="_blank" rel="noopener noreferrer" className="w-full">
-                        <img src={getImageUrl(img)} alt={`Teste de Velocidade ${idx + 1}`} className="w-full rounded-lg object-contain max-h-48 hover:opacity-90 transition-opacity" />
-                      </a>
-                    ) : (
-                      <div className="h-32 w-full flex items-center justify-center bg-slate-50 rounded-lg text-slate-400 text-sm">Sem anexo</div>
-                    )}
+            {(() => {
+              const speedTests = [
+                { img: analysis.speed_test_1_img, label: 'Cabeado' },
+                { img: analysis.speed_test_2_img, label: 'Wi-Fi Perto' },
+                { img: analysis.speed_test_3_img, label: 'Wi-Fi Média Distância' },
+                { img: analysis.speed_test_4_img, label: 'Wi-Fi Longe' },
+              ].filter(test => test.img);
+
+              if (speedTests.length === 0) return null;
+
+              return (
+                <div>
+                  <h3 className="text-lg font-bold text-slate-800 mb-4">Testes de Velocidade</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {speedTests.map((test, idx) => (
+                      <div key={idx} className="bg-surface rounded-xl p-2 border border-slate-100 flex flex-col items-center">
+                        <span className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest mt-2">{test.label}</span>
+                        <a href={getImageUrl(test.img)} target="_blank" rel="noopener noreferrer" className="w-full">
+                          <img src={getImageUrl(test.img)} alt={test.label} className="w-full rounded-lg object-contain max-h-48 hover:opacity-90 transition-opacity" />
+                        </a>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })()}
 
             {analysis.observations && (
               <div>

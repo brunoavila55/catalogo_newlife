@@ -140,6 +140,7 @@ func initDB() {
 		speed_test_1_img TEXT,
 		speed_test_2_img TEXT,
 		speed_test_3_img TEXT,
+		speed_test_4_img TEXT,
 		observations TEXT,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
@@ -161,6 +162,9 @@ func initDB() {
 	
 	// Add purchase_url column
 	_, _ = db.Exec("ALTER TABLE products ADD COLUMN purchase_url TEXT DEFAULT '';")
+	
+	// Add speed_test_4_img to equipment_analysis
+	_, _ = db.Exec("ALTER TABLE equipment_analysis ADD COLUMN speed_test_4_img TEXT DEFAULT '';")
 
 	// Migrate old /uploads/ URLs to /api/v1/uploads/
 	res, _ := db.Exec(`UPDATE products SET image_url = REPLACE(image_url, '/uploads/', '/api/v1/uploads/') WHERE image_url LIKE '/uploads/%'`)
