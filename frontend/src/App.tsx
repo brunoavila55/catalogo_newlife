@@ -17,6 +17,8 @@ import AdminLayout from './pages/admin/AdminLayout';
 import ProductList from './pages/admin/products/ProductList';
 import ProductForm from './pages/admin/products/ProductForm';
 import TagList from './pages/admin/tags/TagList';
+import AnalysisList from './pages/admin/analysis/AnalysisList';
+import AnalysisForm from './pages/admin/analysis/AnalysisForm';
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
                   <Route path="produtos/novo" element={<ProductForm />} />
                   <Route path="produtos/:id/editar" element={<ProductForm />} />
                   <Route path="tags" element={<TagList />} />
+                  <Route path="analise" element={<AnalysisList />} />
+                  <Route path="analise/novo" element={<AnalysisForm />} />
+                  <Route path="analise/:id/editar" element={<AnalysisForm />} />
                 </Route>
               </Route>
             </Route>

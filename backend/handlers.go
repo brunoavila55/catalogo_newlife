@@ -36,6 +36,7 @@ type Product struct {
 	Images   []string          `json:"images_json"`
 	SpecsMap map[string]string `json:"specs_json"`
 	PurchaseURL string          `json:"purchase_url"`
+	IsHomologado bool           `json:"is_homologado"`
 }
 
 type PaginatedResponse struct {
@@ -90,6 +91,8 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 		whereClause += " AND status = 'Em falta'"
 	} else if filter == "in-stock" {
 		whereClause += " AND status = 'Em estoque'"
+	} else if filter == "homologado" {
+		whereClause += " AND EXISTS(SELECT 1 FROM equipment_analysis WHERE product_id = products.id)"
 	}
 
 	var total int
@@ -99,7 +102,7 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := "SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url FROM products " + whereClause + " LIMIT ? OFFSET ?"
+	query := "SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url, EXISTS(SELECT 1 FROM equipment_analysis WHERE product_id = products.id) as is_homologado FROM products " + whereClause + " LIMIT ? OFFSET ?"
 	args = append(args, limit, offset)
 
 	rows, err := db.Query(query, args...)
@@ -113,7 +116,7 @@ func getProductsHandler(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var p Product
 		var specs, tagsJSON, imagesJSON, specsJSON, purchaseURL sql.NullString
-		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL); err != nil {
+		if err := rows.Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL, &p.IsHomologado); err != nil {
 			log.Printf("Row scan error: %v", err)
 			continue
 		}
@@ -502,8 +505,8 @@ func getProductBySlugHandler(w http.ResponseWriter, r *http.Request) {
 	slugParam := chi.URLParam(r, "slug")
 	var p Product
 	var specs, tagsJSON, imagesJSON, specsJSON, purchaseURL sql.NullString
-	err := db.QueryRow("SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url FROM products WHERE slug = ? AND deleted_at IS NULL", slugParam).
-		Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL)
+	err := db.QueryRow("SELECT id, slug, name, category, brand, status, image_url, specs, tags, images_json, specs_json, purchase_url, EXISTS(SELECT 1 FROM equipment_analysis WHERE product_id = products.id) as is_homologado FROM products WHERE slug = ? AND deleted_at IS NULL", slugParam).
+		Scan(&p.ID, &p.Slug, &p.Name, &p.Category, &p.Brand, &p.Status, &p.ImageURL, &specs, &tagsJSON, &imagesJSON, &specsJSON, &purchaseURL, &p.IsHomologado)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Produto não encontrado", http.StatusNotFound)

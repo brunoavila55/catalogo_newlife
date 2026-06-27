@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, PlusCircle, CheckCircle2, Zap, ExternalLink, Wifi, Activity, Plug, Settings, Radio, Network, FolderPlus, X, ShieldCheck } from 'lucide-react';
 import { api } from '../services/api';
 import { useCompare } from '../context/CompareContext';
 import { useProject } from '../context/ProjectContext';
@@ -11,6 +11,7 @@ export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState<any>(null);
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   
@@ -38,6 +39,17 @@ export default function ProductDetail() {
             }
           } catch (e) {
             console.error("Erro ao buscar relacionados", e);
+          }
+
+          if (data.is_homologado) {
+            try {
+              const analysisRes = await api.get(`/analysis/${data.id}`);
+              if (analysisRes.ok) {
+                setAnalysis(await analysisRes.json());
+              }
+            } catch (e) {
+              console.error("Erro ao buscar análise", e);
+            }
           }
         } else {
           setProduct(null);
@@ -200,7 +212,14 @@ export default function ProductDetail() {
 
         {/* Product Details */}
         <div className="w-full lg:w-1/2">
-          <span className="text-brand font-bold uppercase tracking-[0.2em] text-sm mb-3 block">{product.category}</span>
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-brand font-bold uppercase tracking-[0.2em] text-sm block">{product.category}</span>
+            {product.is_homologado && (
+              <span className="bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 px-2 py-0.5 rounded flex items-center gap-1 text-xs font-bold uppercase tracking-wider" title="Equipamento Homologado">
+                <ShieldCheck size={14} /> Homologado
+              </span>
+            )}
+          </div>
           <h1 className="text-4xl md:text-5xl text-slate-900 font-condensed mb-2">{product.name}</h1>
           <p className="text-lg text-slate-600 mb-6">{product.brand}</p>
           
@@ -451,6 +470,45 @@ export default function ProductDetail() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Analysis Section */}
+      {analysis && (
+        <div className="mt-12 bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xl shadow-slate-200/20">
+          <h2 className="text-2xl text-slate-900 font-condensed mb-6 flex items-center gap-2">
+            <ShieldCheck className="text-emerald-500" />
+            Análise e Desempenho (Homologado)
+          </h2>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Testes de Velocidade</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[analysis.speed_test_1_img, analysis.speed_test_2_img, analysis.speed_test_3_img].map((img, idx) => (
+                  <div key={idx} className="bg-surface rounded-xl p-2 border border-slate-100 flex flex-col items-center">
+                    <span className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest mt-2">Teste {idx + 1}</span>
+                    {img ? (
+                      <a href={getImageUrl(img)} target="_blank" rel="noopener noreferrer" className="w-full">
+                        <img src={getImageUrl(img)} alt={`Teste de Velocidade ${idx + 1}`} className="w-full rounded-lg object-contain max-h-48 hover:opacity-90 transition-opacity" />
+                      </a>
+                    ) : (
+                      <div className="h-32 w-full flex items-center justify-center bg-slate-50 rounded-lg text-slate-400 text-sm">Sem anexo</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {analysis.observations && (
+              <div>
+                <h3 className="text-lg font-bold text-slate-800 mb-3">Observações de Funcionamento</h3>
+                <div className="bg-surface-dark border border-slate-200/60 rounded-xl p-5 text-slate-700 whitespace-pre-wrap text-sm leading-relaxed">
+                  {analysis.observations}
+                </div>
               </div>
             )}
           </div>

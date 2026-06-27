@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
-import { X, ExternalLink, Search, ChevronLeft, ChevronRight, Trash2, PlusCircle, CheckCircle2, Zap, SlidersHorizontal, FolderPlus } from 'lucide-react';
+import { X, ExternalLink, Search, ChevronLeft, ChevronRight, Trash2, PlusCircle, CheckCircle2, Zap, SlidersHorizontal, FolderPlus, ShieldCheck } from 'lucide-react';
 import FocusTrap from 'focus-trap-react';
 import { useCompare } from '../context/CompareContext';
 import { useProject } from '../context/ProjectContext';
@@ -21,6 +21,7 @@ export default function Catalog() {
   const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('categoria') || 'Todos');
   const [selectedType, setSelectedType] = useState<string>('Todos');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showHomologadosOnly, setShowHomologadosOnly] = useState(false);
   
   const { compareList, addToCompare, removeFromCompare } = useCompare();
   const { addItem } = useProject();
@@ -100,11 +101,12 @@ export default function Catalog() {
 
   useEffect(() => {
     setVisibleCount(12);
-  }, [selectedCategory, selectedType, selectedTags]);
+  }, [selectedCategory, selectedType, selectedTags, showHomologadosOnly]);
 
   const filteredProducts = products.filter(p => {
     if (selectedCategory !== 'Todos' && p.category !== selectedCategory) return false;
     if (selectedType !== 'Todos' && (!p.specs_json || p.specs_json['_type'] !== selectedType)) return false;
+    if (showHomologadosOnly && !p.is_homologado) return false;
     if (selectedTags.length > 0) {
       const productTags = p.tags || [];
       const hasAllTags = selectedTags.every(st => productTags.includes(st));
@@ -124,7 +126,7 @@ export default function Catalog() {
       });
       return () => ctx.revert();
     }
-  }, [loading, selectedCategory, selectedType, selectedTags.length]);
+  }, [loading, selectedCategory, selectedType, selectedTags.length, showHomologadosOnly]);
 
   const clearFilters = () => {
     setSearchInput('');
@@ -132,6 +134,7 @@ export default function Catalog() {
     setSelectedCategory('Todos');
     setSelectedType('Todos');
     setSelectedTags([]);
+    setShowHomologadosOnly(false);
     setVisibleCount(12);
   };
 
@@ -158,7 +161,7 @@ export default function Catalog() {
     return () => observer.disconnect();
   }, [filteredProducts.length]);
 
-  const activeFiltersCount = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedType !== 'Todos' ? 1 : 0) + selectedTags.length;
+  const activeFiltersCount = (selectedCategory !== 'Todos' ? 1 : 0) + (selectedType !== 'Todos' ? 1 : 0) + selectedTags.length + (showHomologadosOnly ? 1 : 0);
 
   return (
     <div className="relative min-h-screen font-sans overflow-x-hidden">
@@ -271,6 +274,18 @@ export default function Catalog() {
             </div>
           )}
 
+          {/* Homologados */}
+          <div>
+            <span className="text-xs uppercase tracking-[0.15em] text-slate-600 font-bold block mb-3">Qualidade</span>
+            <button
+              onClick={() => setShowHomologadosOnly(!showHomologadosOnly)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${showHomologadosOnly ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30 shadow-lg shadow-emerald-500/10' : 'bg-surface-dark border-slate-200 text-slate-600 hover:border-slate-600 hover:text-slate-900'}`}
+            >
+              <ShieldCheck size={16} />
+              Somente Homologados
+            </button>
+          </div>
+
           {activeFiltersCount > 0 && (
             <button onClick={clearFilters} className="text-red-400 hover:text-red-300 text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors">
               <Trash2 size={14} /> Limpar filtros
@@ -343,6 +358,11 @@ export default function Catalog() {
                             </>
                           ) : (
                             <div className="w-full h-full flex items-center justify-center"><Zap size={32} className="text-slate-700" /></div>
+                          )}
+                          {p.is_homologado && (
+                            <div className="absolute top-3 right-3 bg-emerald-500/90 text-white p-1.5 rounded-full shadow-lg shadow-emerald-500/20 backdrop-blur-md" title="Equipamento Homologado">
+                              <ShieldCheck size={16} />
+                            </div>
                           )}
                           
                           <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

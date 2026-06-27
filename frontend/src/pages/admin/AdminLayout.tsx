@@ -1,5 +1,5 @@
 import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
-import { Package, Tag, LogOut, ExternalLink } from 'lucide-react';
+import { Package, Tag, LogOut, ExternalLink, Activity } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function AdminLayout() {
@@ -43,6 +43,7 @@ export default function AdminLayout() {
   const navLinks = [
     { to: "/gestor-nlf-admin/produtos", icon: Package, label: "Produtos" },
     { to: "/gestor-nlf-admin/tags", icon: Tag, label: "Tags" },
+    { to: "/gestor-nlf-admin/analise", icon: Activity, label: "Análise e Desempenho" },
   ];
 
   return (

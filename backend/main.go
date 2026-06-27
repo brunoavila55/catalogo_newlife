@@ -52,6 +52,8 @@ func main() {
 	r.Get("/api/v1/categories", getCategoriesHandler)
 	r.Get("/api/v1/tags", getTagsHandler)
 	r.Get("/api/v1/types", getProductTypesHandler)
+	r.Get("/api/v1/analysis/{productId}", getAnalysisByProductHandler)
+	r.Get("/api/v1/analysis", getAllAnalysisHandler)
 	
 	// Login is public but rate limited
 	r.With(RateLimitMiddleware).Post("/api/v1/admin/login", loginHandler)
@@ -83,6 +85,9 @@ func main() {
 		r.Post("/api/v1/tags", createTagHandler)
 		r.Put("/api/v1/tags/{id}", updateTagHandler)
 		r.Delete("/api/v1/tags/{id}", deleteTagHandler)
+		
+		r.Post("/api/v1/analysis", createOrUpdateAnalysisHandler)
+		r.Delete("/api/v1/analysis/{productId}", deleteAnalysisHandler)
 		
 		r.Post("/api/v1/upload", uploadImageHandler)
 	})
@@ -127,6 +132,17 @@ func initDB() {
 		username TEXT NOT NULL UNIQUE,
 		password_hash TEXT NOT NULL,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+
+	CREATE TABLE IF NOT EXISTS equipment_analysis (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		product_id INTEGER NOT NULL UNIQUE,
+		speed_test_1_img TEXT,
+		speed_test_2_img TEXT,
+		speed_test_3_img TEXT,
+		observations TEXT,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
 	);
 	`
 	_, err := db.Exec(query)
