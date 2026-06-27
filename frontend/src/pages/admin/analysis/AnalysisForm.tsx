@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, UploadCloud, X, Check } from 'lucide-react';
-import { api } from '../../../../services/api';
-import { useToast } from '../../../../context/ToastContext';
-import { getImageUrl } from '../../../../utils/image';
+import { api } from '../../../services/api';
+import { useToast } from '../../../context/ToastContext';
+import { getImageUrl } from '../../../utils/image';
 
 interface ProductOption {
   id: number;

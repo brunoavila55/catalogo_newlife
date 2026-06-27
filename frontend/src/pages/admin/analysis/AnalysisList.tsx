@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle, Search, Edit, Trash2, ShieldCheck, Activity } from 'lucide-react';
-import { api } from '../../../../services/api';
-import { useToast } from '../../../../context/ToastContext';
-import { getImageUrl } from '../../../../utils/image';
+import { api } from '../../../services/api';
+import { useToast } from '../../../context/ToastContext';
+import { getImageUrl } from '../../../utils/image';
 
 interface Analysis {
   id: number;
